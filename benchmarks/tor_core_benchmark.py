@@ -11,17 +11,12 @@ import json
 import mmap
 import os
 import platform
-import select
-import socket
-import socketserver
 import statistics
 import subprocess
 import sys
 import tempfile
-import threading
 import time
 import uuid
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 import psutil
@@ -74,24 +69,24 @@ class CoreLayer:
                 yield from scanner(self.read(address, length), address)
 
 
-def scan_core(path, visited, link_only, repetitions):
+def scan_core(path, rendered_link, absent_control, repetitions):
     layer = CoreLayer(path)
     try:
         samples = []
-        visit_hits = 0
-        link_hits = 0
+        rendered_hits = 0
+        absent_hits = 0
         total_hits = 0
         for _ in range(repetitions):
             start = time.perf_counter()
-            counts = {visited: 0, link_only: 0}
+            counts = {rendered_link: 0, absent_control: 0}
             count = 0
             for hit in core.scan_layer(layer, None, layer.sections, max_hits=1000000):
                 count += 1
                 if hit.artifact in counts:
                     counts[hit.artifact] += 1
             samples.append(time.perf_counter() - start)
-            visit_hits = counts[visited]
-            link_hits = counts[link_only]
+            rendered_hits = counts[rendered_link]
+            absent_hits = counts[absent_control]
             total_hits = count
         return {
             "file_bytes": os.path.getsize(path),
@@ -101,100 +96,11 @@ def scan_core(path, visited, link_only, repetitions):
             "median_seconds": round(statistics.median(samples), 3),
             "median_mib_per_second": round(layer.mapped_bytes / (1024 * 1024) / statistics.median(samples), 2),
             "total_hits": total_hits,
-            "visited_url_string_hits": visit_hits,
-            "link_only_url_string_hits": link_hits,
+            "rendered_link_string_hits": rendered_hits,
+            "absent_control_string_hits": absent_hits,
         }
     finally:
         layer.close()
-
-
-def make_server(visited_path, link_only):
-    class Handler(BaseHTTPRequestHandler):
-        def do_GET(self):
-            body = (
-                f'<html><body><h1>TorSessionTrace controlled page</h1>'
-                f'<a href="{link_only}">Link only</a>'
-                f'<p id="marker">{visited_path}</p></body></html>'
-            ).encode()
-            self.send_response(200)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-
-        def log_message(self, format, *args):
-            pass
-
-    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
-    threading.Thread(target=server.serve_forever, daemon=True).start()
-    return server
-
-
-def make_local_socks_proxy(allowed_port):
-    """Serve only the controlled loopback page through Tor Browser's SOCKS port."""
-
-    class Handler(socketserver.BaseRequestHandler):
-        def handle(self):
-            client = self.request
-            client.settimeout(15)
-
-            def take(count):
-                data = b""
-                while len(data) < count:
-                    part = client.recv(count - len(data))
-                    if not part:
-                        raise ConnectionError("SOCKS peer closed")
-                    data += part
-                return data
-
-            try:
-                version, methods = take(2)
-                if version != 5:
-                    return
-                offered = take(methods)
-                if 0 not in offered:
-                    client.sendall(b"\x05\xff")
-                    return
-                client.sendall(b"\x05\x00")
-                version, command, _, address_type = take(4)
-                if version != 5 or command != 1:
-                    return
-                if address_type == 1:
-                    host = socket.inet_ntop(socket.AF_INET, take(4))
-                elif address_type == 3:
-                    host = take(take(1)[0]).decode("ascii", errors="ignore")
-                elif address_type == 4:
-                    host = socket.inet_ntop(socket.AF_INET6, take(16))
-                else:
-                    return
-                port = int.from_bytes(take(2), "big")
-                if host not in ("127.0.0.1", "localhost") or port != allowed_port:
-                    client.sendall(b"\x05\x02\x00\x01\x00\x00\x00\x00\x00\x00")
-                    return
-                with socket.create_connection(("127.0.0.1", allowed_port), timeout=15) as upstream:
-                    client.sendall(b"\x05\x00\x00\x01\x7f\x00\x00\x01\x00\x00")
-                    client.settimeout(None)
-                    upstream.settimeout(None)
-                    peers = (client, upstream)
-                    while True:
-                        readable, _, _ = select.select(peers, [], [], 15)
-                        if not readable:
-                            break
-                        for source in readable:
-                            chunk = source.recv(65536)
-                            if not chunk:
-                                return
-                            (upstream if source is client else client).sendall(chunk)
-            except (OSError, ConnectionError, ValueError):
-                return
-
-    class Server(socketserver.ThreadingTCPServer):
-        allow_reuse_address = True
-        daemon_threads = True
-
-    proxy = Server(("127.0.0.1", 9150), Handler)
-    threading.Thread(target=proxy.serve_forever, daemon=True).start()
-    return proxy
 
 
 def browser_pids(driver_pid):
@@ -219,18 +125,12 @@ def main():
     parser.add_argument("--repetitions", type=int, default=3)
     args = parser.parse_args()
     token = uuid.uuid4().hex
-    visited_path = f"/visited-{token}"
-    link_only = f"https://link-only.invalid/{token}"
-    server = make_server(visited_path, link_only)
-    proxy = make_local_socks_proxy(server.server_port)
-    visited = f"http://127.0.0.1:{server.server_port}{visited_path}"
+    rendered_link = f"https://rendered-link.invalid/{token}"
+    absent_control = f"https://absent-control.invalid/{token}"
 
     options = Options()
     options.binary_location = str(args.browser.resolve())
     options.add_argument("-headless")
-    options.set_preference("network.proxy.type", 1)
-    options.set_preference("network.proxy.socks", "127.0.0.1")
-    options.set_preference("network.proxy.socks_port", 9150)
     options.set_preference("browser.shell.checkDefaultBrowser", False)
     options.set_preference("app.update.enabled", False)
     options.set_preference("browser.aboutConfig.showWarning", False)
@@ -243,18 +143,22 @@ def main():
         "runner": platform.platform(),
         "machine": platform.machine(),
         "cpu_count": os.cpu_count(),
-        "visited_test_url": visited,
-        "link_only_test_url": link_only,
-        "navigation_verified_by_webdriver": False,
+        "rendered_link_url": rendered_link,
+        "absent_control_url": absent_control,
+        "dom_render_verified_by_webdriver": False,
         "cores": [],
     }
     try:
         driver = webdriver.Firefox(service=Service(executable_path=str(args.driver.resolve())), options=options)
         driver.set_page_load_timeout(45)
-        driver.get(visited)
-        if visited_path not in driver.page_source:
-            raise RuntimeError("Controlled page did not load")
-        result["navigation_verified_by_webdriver"] = True
+        driver.get("about:blank")
+        driver.execute_script(
+            "document.body.innerHTML = arguments[0]",
+            f'<h1>TorSessionTrace offline page</h1><a href="{rendered_link}">Not visited</a>',
+        )
+        if rendered_link not in driver.page_source:
+            raise RuntimeError("Controlled link was not rendered")
+        result["dom_render_verified_by_webdriver"] = True
         time.sleep(2)
         pids = browser_pids(driver.service.process.pid)
         if not pids:
@@ -273,18 +177,16 @@ def main():
                     result["cores"].append({"pid": pid, "capture_error": capture.stderr[-600:]})
                     continue
                 record = {"pid": pid, "acquire_seconds": round(time.perf_counter() - acquire_start, 3)}
-                record.update(scan_core(core_path, visited, link_only, args.repetitions))
+                record.update(scan_core(core_path, rendered_link, absent_control, args.repetitions))
                 result["cores"].append(record)
                 core_path.unlink()
-                if record["visited_url_string_hits"]:
+                if record["rendered_link_string_hits"]:
                     break
-        if not any(c.get("visited_url_string_hits", 0) for c in result["cores"]):
-            raise RuntimeError("Visited test URL was not found in captured browser cores")
+        if not any(c.get("rendered_link_string_hits", 0) for c in result["cores"]):
+            raise RuntimeError("Rendered link URL was not found in captured browser cores")
     finally:
         if driver is not None:
             driver.quit()
-        proxy.shutdown()
-        server.shutdown()
         args.output.write_text(json.dumps(result, indent=2) + "\n")
         print(json.dumps(result, indent=2))
 
