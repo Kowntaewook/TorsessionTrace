@@ -28,7 +28,7 @@ The timed extraction runs scan each core with the extractor's four patterns (ASC
 
 The controlled link was found in real Tor Browser process memory without a visit. This directly supports reporting `E1:process_memory_string` and rules out treating a URL hit alone as proof of browsing. The absent control being undetected is one useful control for this run; it does not establish a general specificity estimate.
 
-This is an **ELF process core**, not a whole-system RAM image. It verifies capture and the shared string extractor against actual Tor Browser memory. It does **not** verify Volatility's Windows VAD or Linux VMA traversal, OS symbol resolution, process identification from a full image, or `SessionHistory`, `Document`, or `STREAM` reconstruction. Those require separate whole-system image fixtures. The benchmark has no network-visit positive control, so recall for visited pages is unmeasured.
+This is an **ELF process core**, not a whole-system RAM image. It verifies capture and the shared string extractor against actual Tor Browser memory. Separate [Windows and Linux whole-RAM integration tests](tor-whole-image-integration-2026-11-02.md) verify OS symbol resolution, process identification, and VAD/VMA traversal with Tor Browser running. Neither test reconstructs `SessionHistory`, `Document`, or `STREAM`. The benchmark has no network-visit positive control, so recall for visited pages is unmeasured.
 
 To reproduce the benchmark, run the [Tor Browser memory benchmark workflow](../.github/workflows/benchmark.yml) from GitHub Actions. It generates a fresh random control URL and captures a fresh process core on each run; timings and hit counts can vary.
 

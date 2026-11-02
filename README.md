@@ -6,12 +6,14 @@ TorSessionTrace is a Volatility 3 plugin that extracts URL and v3 `.onion` **str
 
 | Test | Fixture | Result |
 | --- | --- | --- |
+| **Windows Tor Browser whole-RAM integration** | Tor Browser 16.0 running on Windows Server 2022; WinPmem raw image | Unvisited link found **2** times per run; absent control **0**; **13.231 s** median over 3 adapter runs |
+| **Linux Tor Browser whole-RAM integration** | Tor Browser 16.0 running on Ubuntu 24.04; AVML LiME image | Unvisited link found **3** times per run; absent control **0**; **21.886 s** median over 3 adapter runs |
 | Windows adapter | Volatility Foundation Windows 10 whole-system image; `msedge.exe` PID 3952 | 7,112 string hits per run; 31.226 s median over 3 runs |
 | Linux adapter | Volatility Foundation Linux whole-system image; `NetworkManager` PID 2363 | 12 string hits per run; 4.310 s median over 3 runs |
 | Shared extractor | Real Tor Browser 16.0 Linux process core | Unvisited link URL found 19 and 20 times in two independent runs; absent control 0 |
 | Code and plugin registration | GitHub Actions on Ubuntu, Windows, and macOS | All jobs passed |
 
-The [whole-system validation](docs/full-image-validation-2026-11-02.md) exercises OS symbol resolution, process discovery, VAD/VMA traversal, and extraction through both plugin entry points. Those public images **do not contain Tor Browser**. The [Tor Browser core benchmark](docs/benchmark-2026-11-02.md) uses actual browser memory and the same extraction code, but a process core is not a whole-system image. A whole-system **Tor Browser** fixture has not yet been tested. Image size is not the number of bytes scanned: each adapter scans only the selected process.
+The [combined whole-RAM tests](docs/tor-whole-image-integration-2026-11-02.md) captured each machine while Tor Browser was running. Volatility identified browser PIDs in the full image, and each OS adapter found a link rendered in browser memory but never opened. The [Foundation image tests](docs/full-image-validation-2026-11-02.md) additionally exercise both adapters on independent public images without Tor Browser. The [process-core benchmark](docs/benchmark-2026-11-02.md) checks the shared extractor separately. Image size is not the number of bytes scanned: each timed adapter run scans only the selected process, after a separate `pslist` run. Each median is from three analyses of **one capture**, not three independent captures.
 
 ## Install on Windows, Linux, or macOS
 
@@ -74,6 +76,8 @@ Memory images and plugin output can contain sensitive data. The workflows upload
 - [CI workflow](.github/workflows/ci.yml): synthetic extraction tests and plugin registration on Windows, Ubuntu, and macOS. [Passing run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41433076743).
 - [Whole-system image workflow](.github/workflows/full-image-validation.yml): verified Foundation Windows/Linux images and matching symbols, baseline `pslist`, then three adapter runs. [Passing run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41433076839) and [measurements](docs/full-image-validation-2026-11-02.md).
 - [Tor Browser memory benchmark](.github/workflows/benchmark.yml): signed Tor Browser 16.0 download, offline unvisited-link control, `gcore` capture, then three shared-extractor runs. [Passing run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41433076755) and [measurements](docs/benchmark-2026-11-02.md).
+- [Windows Tor Browser whole-RAM workflow](.github/workflows/tor-whole-windows.yml): verify Tor Browser download checksum, render an offline link, capture RAM with WinPmem, run `windows.pslist` and the Windows adapter three times on a Tor Browser PID. [Passing run and aggregate artifact](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41434692131).
+- [Linux Tor Browser whole-RAM workflow](.github/workflows/tor-whole-linux.yml): verify Tor Browser signatures, build matching BTF symbols, render an offline link, capture RAM with AVML, run `linux.pslist` and the Linux adapter three times. [Passing run and aggregate artifact](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41436080774). Both sets of [measurements and capture hashes](docs/tor-whole-image-integration-2026-11-02.md) are documented.
 
 On Apple Silicon, use the Mac as an **analysis host** for supported Intel images or run the workflows on GitHub Actions. Native Mac live RAM acquisition and Apple Silicon macOS memory analysis are separate problems and are not claimed here. Native ARM Windows/Linux guest images also fall outside these Intel-only plugin requirements.
 
