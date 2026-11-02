@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "summary": [
+    {
+      "target_os": "linux",
+      "scenario": "absent",
+      "independent_captures": 3,
+      "target_detected_captures": 0,
+      "detection_fraction": 0.0,
+      "detection_wilson_95": [
+        0.0,
+        0.5615
+      ],
+      "http_requested_captures": 0,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 67,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 0,
+      "exact_target_yara_median_seconds": 16.271,
+      "image_sha256": [
+        "db03aafb74210f1130dcc95da2fce68fd6dadf2c7452eac0f5d7b16bcff1b50b",
+        "38863f846122103ed466222a5d079edba085c02f69337307a0369a43fd2fe46e",
+        "e67dee1726746dc177ff6717796fcd78305f441f52edb6eeb1a009ac416e275d"
+      ]
+    },
+    {
+      "target_os": "linux",
+      "scenario": "link_only",
+      "independent_captures": 3,
+      "target_detected_captures": 3,
+      "detection_fraction": 1.0,
+      "detection_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "http_requested_captures": 0,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 126.638,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 3,
+      "exact_target_yara_median_seconds": 29.292,
+      "image_sha256": [
+        "08be8bb1f09c3a6b012554f880171b658b6e1e13d4ca9dfd9adef18fe0005b0b",
+        "25afa91f0702f6f3089d5c25f3eb9ea0e719ea387b537c09a7fc63b3a5728e97",
+        "d4942136d8c4dff5251494c79ae21b2d9b934e2e9b98e405baa544aea022aaaf"
+      ]
+    },
+    {
+      "target_os": "linux",
+      "scenario": "clicked",
+      "independent_captures": 3,
+      "target_detected_captures": 3,
+      "detection_fraction": 1.0,
+      "detection_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "http_requested_captures": 3,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 117.155,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 3,
+      "exact_target_yara_median_seconds": 26.934,
+      "image_sha256": [
+        "79ce516a0b76ed53e08672b1fedfb0c59cd09e06e39009335d563633b052e4ca",
+        "e2191b023c5eec7ede86b8c38964211d1098a939e1e7228062770fa9122f53ad",
+        "f2821f19988e223006411e451edf0a66e288bbe1576d41188ad7f29af1532b74"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "absent",
+      "independent_captures": 3,
+      "target_detected_captures": 0,
+      "detection_fraction": 0.0,
+      "detection_wilson_95": [
+        0.0,
+        0.5615
+      ],
+      "http_requested_captures": 0,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 118.823,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 0,
+      "exact_target_yara_median_seconds": 71.954,
+      "image_sha256": [
+        "b295fa37f10432f77bdb892d48c0dfb66ae176e1e9cf167c4bf42f349df93f85",
+        "5e09eb0646927f6442f821c1e18b19e68a876e79c607773a98dc0db54f6ebfbe",
+        "dee798ec13b49ad0047efdf81643ee9ff920851def987f59a8505ec0cf58bf9f"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "link_only",
+      "independent_captures": 3,
+      "target_detected_captures": 3,
+      "detection_fraction": 1.0,
+      "detection_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "http_requested_captures": 0,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 132.93,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 3,
+      "exact_target_yara_median_seconds": 74.796,
+      "image_sha256": [
+        "8e6d2c5e8670c0236a31cb5a5121ed355b563e3aaf6c2fd7ecb91de6aa3da707",
+        "eff3054a4c0c7a0f2b6c9c4e7547c61cf4a048df99cd8627bef2583632081ab8",
+        "8f9f0bac88d732b4e7447527e0bbe2ff1064a54b5752167b80ff79e971e129f2"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "clicked",
+      "independent_captures": 3,
+      "target_detected_captures": 3,
+      "detection_fraction": 1.0,
+      "detection_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "http_requested_captures": 3,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 114.523,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 3,
+      "exact_target_yara_median_seconds": 67.097,
+      "image_sha256": [
+        "033dd60c98a286d8b308db4542df07829417f7db1554ba674c0f87c65bae8e9e",
+        "291560805fc8b4acd65b8ff6ccc242c59c2ee3545f1f0ff389c4238812f1a612",
+        "fc8b10df141b5f23f5c10819ac0b2b4654f401b7dd26af2a2b19e1bc9decb779"
+      ]
+    }
+  ]
+}
