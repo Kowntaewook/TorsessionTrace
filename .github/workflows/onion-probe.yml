@@ -1,0 +1,31 @@
+name: Real Tor onion service network preflight
+
+on:
+  push:
+    paths:
+      - '.github/workflows/onion-probe.yml'
+      - 'benchmarks/tor_onion_probe.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-onion-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install Tor
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y tor curl
+      - name: Request ephemeral v3 onion service through Tor network
+        run: python3 benchmarks/tor_onion_probe.py --output onion-probe-result.json --timeout 420
+      - name: Upload aggregate probe result only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: onion-network-preflight
+          path: onion-probe-result.json
+          if-no-files-found: ignore
