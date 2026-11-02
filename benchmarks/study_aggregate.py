@@ -45,6 +45,9 @@ def aggregate(paths, expected_os, expected_replicates):
             passed = sum(bool(row["protocol_pass"]) for row in group)
             durations = [row.get("adapter_seconds_total", sum(scan.get("seconds", 0)
                          for scan in row["scans"])) for row in group]
+            baseline_available = [row["exact_target_yara_baseline"] for row in group
+                                  if row.get("exact_target_yara_baseline") and
+                                  "error_type" not in row["exact_target_yara_baseline"]]
             summary.append({
                 "target_os": os_name,
                 "scenario": scenario,
@@ -55,6 +58,14 @@ def aggregate(paths, expected_os, expected_replicates):
                 "http_requested_captures": requested,
                 "protocol_pass_captures": passed,
                 "median_all_browser_pid_scan_seconds": round(statistics.median(durations), 3),
+                "exact_target_yara_available_captures": len(baseline_available),
+                "exact_target_yara_detected_captures": sum(
+                    bool(row["target_detected"]) for row in baseline_available
+                ),
+                "exact_target_yara_median_seconds": (
+                    round(statistics.median(row["seconds_total"] for row in baseline_available), 3)
+                    if baseline_available else None
+                ),
                 "image_sha256": [row["image_sha256"] for row in group],
             })
     return {"schema_version": 1, "summary": summary}

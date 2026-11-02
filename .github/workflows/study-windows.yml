@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         scenario: [absent, link_only, clicked]
-        replicate: [1]
+        replicate: [1, 2, 3]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -30,7 +30,7 @@ jobs:
           python-version: '3.12'
       - name: Install analysis and browser dependencies
         run: |
-          python -m pip install 'volatility3==2.28.2' selenium psutil
+          python -m pip install 'volatility3==2.28.2' 'yara-python==4.5.4' selenium psutil
           python benchmarks/use_https_symbols.py
       - name: Download Tor Browser 16.0, geckodriver, and WinPmem
         shell: pwsh
@@ -61,7 +61,7 @@ jobs:
           if (-not $browser) { throw 'No Tor Browser firefox.exe found' }
           python benchmarks/study_fixture.py --scenario '${{ matrix.scenario }}' --replicate '${{ matrix.replicate }}' --browser "$browser" --driver "$PWD/geckodriver.exe" --capture-tool "$PWD/winpmem.exe" --image "$PWD/whole-ram.raw" --control "$PWD/control.json"
       - name: Measure target recovery through Windows adapter
-        run: python benchmarks/study_validate.py --target windows --image whole-ram.raw --control control.json --output study-result.json
+        run: python benchmarks/study_validate.py --target windows --image whole-ram.raw --control control.json --baseline-yara --output study-result.json
       - name: Upload aggregate metrics only
         if: always()
         uses: actions/upload-artifact@v4

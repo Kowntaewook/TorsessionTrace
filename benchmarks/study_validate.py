@@ -46,6 +46,25 @@ def evaluate(args):
             "target_hits": sum(row.get("Artifact") == target for row in process_hits),
             "absent_control_hits": sum(row.get("Artifact") == absent for row in process_hits),
         })
+    baseline = None
+    if args.baseline_yara:
+        yara_plugin = ("windows.vadyarascan.VadYaraScan" if args.target == "windows"
+                       else "linux.vmayarascan.VmaYaraScan")
+        try:
+            yara_rows, yara_seconds = run_vol(
+                common, yara_plugin, "--pid", *(str(pid) for pid in pids),
+                "--yara-string", target,
+            )
+            yara_hits = sum(row.get("PID") in pids for row in yara_rows)
+            baseline = {
+                "method": "Volatility process-scoped YARA exact known target",
+                "target_hits": yara_hits,
+                "target_detected": yara_hits > 0,
+                "seconds_total": yara_seconds,
+            }
+        except Exception as exc:
+            baseline = {"method": "Volatility process-scoped YARA exact known target",
+                        "error_type": type(exc).__name__}
     target_hits = sum(row["target_hits"] for row in scans)
     absent_hits = sum(row["absent_control_hits"] for row in scans)
     failures = []
@@ -82,6 +101,7 @@ def evaluate(args):
         "pslist_process_count": len(pslist),
         "pslist_seconds": pslist_seconds,
         "adapter_seconds_total": adapter_seconds_total,
+        "exact_target_yara_baseline": baseline,
         "scans": scans,
     }
     return result
@@ -94,6 +114,7 @@ def main():
     parser.add_argument("--symbols", type=Path)
     parser.add_argument("--control", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--baseline-yara", action="store_true")
     args = parser.parse_args()
     result = evaluate(args)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

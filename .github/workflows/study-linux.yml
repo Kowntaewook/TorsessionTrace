@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         scenario: [absent, link_only, clicked]
-        replicate: [1]
+        replicate: [1, 2, 3]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -31,7 +31,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y libdbus-glib-1-2 libgtk-3-0
-          python -m pip install 'volatility3==2.28.2' selenium psutil
+          python -m pip install 'volatility3==2.28.2' 'yara-python==4.5.4' selenium psutil
       - name: Download and verify Tor Browser 16.0
         run: |
           curl -fLsS -o tor-browser.tar.xz https://archive.torproject.org/tor-package-archive/torbrowser/16.0/tor-browser-linux-x86_64-16.0.tar.xz
@@ -82,7 +82,7 @@ jobs:
           python benchmarks/study_fixture.py --scenario '${{ matrix.scenario }}' --replicate '${{ matrix.replicate }}' --browser "$BROWSER" --driver "$PWD/geckodriver" --capture-tool "$PWD/avml" --image "$PWD/whole-ram.lime" --control "$PWD/control.json"
           sudo chown "$USER" whole-ram.lime
       - name: Measure target recovery through Linux adapter
-        run: python benchmarks/study_validate.py --target linux --image whole-ram.lime --symbols symbols --control control.json --output study-result.json
+        run: python benchmarks/study_validate.py --target linux --image whole-ram.lime --symbols symbols --control control.json --baseline-yara --output study-result.json
       - name: Upload aggregate metrics only
         if: always()
         uses: actions/upload-artifact@v4
