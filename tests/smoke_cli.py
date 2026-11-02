@@ -22,7 +22,7 @@ for name in NAMES:
     if name not in listing.stdout:
         raise SystemExit("Plugin was not registered: " + name)
     help_result = subprocess.run(
-        [vol, "-p", str(PLUGINS), name, "-h"],
+        [vol, "-p", str(PLUGINS), name, "--pid", "1", "-h"],
         text=True, capture_output=True,
     )
     if help_result.returncode:
