@@ -1,0 +1,35 @@
+name: Live whole-RAM acquisition feasibility
+
+on:
+  push:
+    paths:
+      - '.github/workflows/integration-feasibility.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Inspect kernel memory acquisition prerequisites
+        shell: bash
+        run: |
+          uname -r
+          free -h
+          df -h .
+          for source in /proc/kcore /dev/crash /dev/mem /dev/kvm; do
+            if test -e "$source"; then ls -l "$source"; else echo "$source unavailable"; fi
+          done
+          if test -r /sys/kernel/security/lockdown; then cat /sys/kernel/security/lockdown; fi
+          sudo python3 -c 'from pathlib import Path; p=Path("/proc/kcore"); print("kcore_header_readable", p.open("rb").read(4)==bytes([127,69,76,70]))' || true
+  windows-probe:
+    runs-on: windows-2022
+    steps:
+      - name: Inspect runner privileges and physical memory capacity
+        shell: pwsh
+        run: |
+          whoami /groups
+          Get-CimInstance Win32_ComputerSystem | Select-Object TotalPhysicalMemory,HypervisorPresent | Format-List
+          Get-PSDrive C | Select-Object Used,Free | Format-List
