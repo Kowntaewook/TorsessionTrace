@@ -43,7 +43,13 @@ class LocalSocksTest(unittest.TestCase):
                 self.assertEqual(recv_exact(client, 2), b"\x05\x00")
                 recv_exact(client, 8)
                 client.sendall(b"GET / HTTP/1.1\r\nHost: 127.0.0.1\r\nConnection: close\r\n\r\n")
-                self.assertIn(b"fixture-ok", client.recv(4096))
+                response = bytearray()
+                while b"fixture-ok" not in response:
+                    block = client.recv(4096)
+                    if not block:
+                        break
+                    response.extend(block)
+                self.assertIn(b"fixture-ok", response)
             with socket.create_connection(("127.0.0.1", socks.server_address[1])) as client:
                 client.sendall(b"\x05\x01\x00")
                 self.assertEqual(recv_exact(client, 2), b"\x05\x00")
