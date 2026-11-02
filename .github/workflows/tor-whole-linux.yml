@@ -49,12 +49,14 @@ jobs:
           echo 'e75597dcdcaaa8475fdc61643effb050f72aaa9cff677c7271386a9781bf4460  avml' | sha256sum --check
           chmod +x avml
           test -r /sys/kernel/btf/vmlinux
+          sudo cp /sys/kernel/btf/vmlinux vmlinux.btf
+          sudo chown "$USER" vmlinux.btf
           sudo cp "/boot/System.map-$(uname -r)" System.map
           sudo chown "$USER" System.map
           curl -fLsS -o btf2json https://github.com/vobst/btf2json/releases/download/v0.1.0/btf2json
           chmod +x btf2json
           mkdir -p symbols/linux
-          if ! ./btf2json --btf /sys/kernel/btf/vmlinux --map System.map --banner "$(cat /proc/version)" > symbols/linux/current.json; then
+          if ! ./btf2json --btf vmlinux.btf --map System.map --banner "$(cat /proc/version)" > symbols/linux/current.json; then
             head -10 symbols/linux/current.json
             exit 1
           fi
