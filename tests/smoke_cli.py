@@ -23,8 +23,13 @@ for name in NAMES:
         raise SystemExit("Plugin was not registered: " + name)
     help_result = subprocess.run(
         [vol, "-p", str(PLUGINS), name, "-h"],
-        text=True, capture_output=True, check=True,
+        text=True, capture_output=True,
     )
+    if help_result.returncode:
+        raise SystemExit(
+            f"Plugin help failed for {name} (exit {help_result.returncode})\n"
+            f"stdout:\n{help_result.stdout}\nstderr:\n{help_result.stderr}"
+        )
     if "--pid PID" not in help_result.stdout:
         raise SystemExit("Required PID option missing: " + name)
     print("OK:", name)
