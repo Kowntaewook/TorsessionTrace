@@ -23,22 +23,27 @@ def evaluate(args):
     process_map = {int(r["PID"]): r for r in pslist if isinstance(r.get("PID"), int)}
     pids = [int(pid) for pid in control["browser_pids"] if int(pid) in process_map]
     if not pids:
-        raise RuntimeError("Captured Tor Browser PIDs missing from whole-RAM pslist")
+        candidates = [(r.get("PID"), r.get("ImageFileName", r.get("COMM")))
+                      for r in pslist if "firefox" in str(r.get("ImageFileName", r.get("COMM", ""))).lower()]
+        raise RuntimeError(f"Recorded Tor Browser PIDs {control['browser_pids']} missing "
+                           f"from whole-RAM pslist; Firefox candidates: {candidates}")
     plugin = f"tor_session_trace.{args.target}.TorSessionTrace{args.target.title()}"
+    print(f"Scanning captured Tor Browser PIDs {pids}", flush=True)
+    hits, adapter_seconds_total = run_vol(
+        common, plugin, "--pid", *(str(pid) for pid in pids), "--max-hits", "1000000"
+    )
+    if any(row.get("PID") not in pids or row.get("Evidence") != "E1:process_memory_string"
+           for row in hits):
+        raise RuntimeError("Invalid adapter evidence or unexpected PID")
     scans = []
     for pid in pids:
-        print(f"Scanning captured Tor Browser PID {pid}", flush=True)
-        hits, seconds = run_vol(common, plugin, "--pid", str(pid), "--max-hits", "1000000")
-        if any(row.get("PID") != pid or row.get("Evidence") != "E1:process_memory_string"
-               for row in hits):
-            raise RuntimeError(f"Invalid adapter evidence for PID {pid}")
+        process_hits = [row for row in hits if row.get("PID") == pid]
         scans.append({
             "pid": pid,
             "process": process_map[pid].get("ImageFileName", process_map[pid].get("COMM")),
-            "seconds": seconds,
-            "string_hits": len(hits),
-            "target_hits": sum(row.get("Artifact") == target for row in hits),
-            "absent_control_hits": sum(row.get("Artifact") == absent for row in hits),
+            "string_hits": len(process_hits),
+            "target_hits": sum(row.get("Artifact") == target for row in process_hits),
+            "absent_control_hits": sum(row.get("Artifact") == absent for row in process_hits),
         })
     target_hits = sum(row["target_hits"] for row in scans)
     absent_hits = sum(row["absent_control_hits"] for row in scans)
@@ -72,6 +77,7 @@ def evaluate(args):
         "browser_pids_found_in_image": pids,
         "pslist_process_count": len(pslist),
         "pslist_seconds": pslist_seconds,
+        "adapter_seconds_total": adapter_seconds_total,
         "scans": scans,
     }
     return result

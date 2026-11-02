@@ -39,6 +39,8 @@ class TorSessionTraceWindows(plugins.PluginInterface):
         max_hits = self.config.get("max_hits", 1000)
         if max_hits < 1:
             raise ValueError("--max-hits must be positive")
+        requested = set(pids)
+        found = set()
         procs = pslist.PsList.list_processes(
             self.context,
             self.config["kernel"],
@@ -46,6 +48,7 @@ class TorSessionTraceWindows(plugins.PluginInterface):
         )
         for proc in procs:
             pid = int(proc.UniqueProcessId)
+            found.add(pid)
             name = utility.array_to_string(proc.ImageFileName)
             layer_name = proc.add_process_layer()
             if not layer_name:
@@ -63,6 +66,8 @@ class TorSessionTraceWindows(plugins.PluginInterface):
             ):
                 yield (0, (pid, name, format_hints.Hex(hit.offset),
                            hit.encoding, hit.kind, hit.artifact, "E1:process_memory_string"))
+        if requested - found:
+            raise RuntimeError(f"Selected PIDs not found: {sorted(requested - found)}")
 
     def run(self):
         return renderers.TreeGrid(

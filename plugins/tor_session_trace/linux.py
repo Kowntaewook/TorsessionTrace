@@ -39,6 +39,8 @@ class TorSessionTraceLinux(plugins.PluginInterface):
         max_hits = self.config.get("max_hits", 1000)
         if max_hits < 1:
             raise ValueError("--max-hits must be positive")
+        requested = set(pids)
+        found = set()
         tasks = pslist.PsList.list_tasks(
             self.context,
             self.config["kernel"],
@@ -46,6 +48,7 @@ class TorSessionTraceLinux(plugins.PluginInterface):
         )
         for task in tasks:
             pid = int(task.tgid)
+            found.add(pid)
             name = utility.array_to_string(task.comm)
             if not task.mm:
                 raise RuntimeError(f"PID {pid}: no user process memory map")
@@ -61,6 +64,8 @@ class TorSessionTraceLinux(plugins.PluginInterface):
             ):
                 yield (0, (pid, name, format_hints.Hex(hit.offset),
                            hit.encoding, hit.kind, hit.artifact, "E1:process_memory_string"))
+        if requested - found:
+            raise RuntimeError(f"Selected PIDs not found: {sorted(requested - found)}")
 
     def run(self):
         return renderers.TreeGrid(

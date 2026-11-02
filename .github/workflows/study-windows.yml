@@ -6,6 +6,8 @@ on:
       - '.github/workflows/study-windows.yml'
       - 'benchmarks/study_fixture.py'
       - 'benchmarks/study_validate.py'
+      - 'benchmarks/local_socks.py'
+      - 'benchmarks/use_https_symbols.py'
       - 'plugins/tor_session_trace/**'
   workflow_dispatch:
 
@@ -27,7 +29,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install analysis and browser dependencies
-        run: python -m pip install 'volatility3==2.28.2' selenium psutil
+        run: |
+          python -m pip install 'volatility3==2.28.2' selenium psutil
+          python benchmarks/use_https_symbols.py
       - name: Download Tor Browser 16.0, geckodriver, and WinPmem
         shell: pwsh
         run: |

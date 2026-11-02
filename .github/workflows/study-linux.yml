@@ -6,6 +6,7 @@ on:
       - '.github/workflows/study-linux.yml'
       - 'benchmarks/study_fixture.py'
       - 'benchmarks/study_validate.py'
+      - 'benchmarks/local_socks.py'
       - 'plugins/tor_session_trace/**'
   workflow_dispatch:
 

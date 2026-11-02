@@ -56,12 +56,14 @@ def make_handler(state):
     return Handler
 
 
-def browser_pids(driver_pid):
-    parent = psutil.Process(driver_pid)
+def browser_pids(browser):
+    root = browser.parent.resolve()
     found = []
-    for process in parent.children(recursive=True):
+    for process in psutil.process_iter():
         try:
-            if "firefox" in process.name().lower():
+            executable = process.exe()
+            if ("firefox" in process.name().lower() and executable and
+                    Path(executable).resolve().is_relative_to(root)):
                 found.append((process.memory_info().rss, process.pid))
         except psutil.Error:
             continue
@@ -117,8 +119,8 @@ def main():
         time.sleep(2)
         request_count = state["target_requests"]
         print(f"Target HTTP requests: {request_count}", flush=True)
-        pids = browser_pids(driver.service.process.pid)
-        if not pids:
+        pids_before = browser_pids(browser)
+        if not pids_before:
             raise RuntimeError("No Tor Browser Firefox process found")
         control = {
             "scenario": args.scenario,
@@ -126,19 +128,28 @@ def main():
             "target_url": state["target_url"],
             "absent_control_url": absent_url,
             "target_http_requests": request_count,
-            "browser_pids": pids,
+            "browser_pids": pids_before,
+            "browser_pids_before_capture": pids_before,
             "browser_binary_sha256": hashlib.sha256(browser.read_bytes()).hexdigest(),
         }
-        args.control.write_text(json.dumps(control, indent=2) + "\n", encoding="utf-8")
         tool = str(args.capture_tool.resolve())
         command = (["sudo", "-n", tool, "acquire", str(args.image.resolve())]
                    if platform.system() == "Linux" else
                    [tool, "acquire", str(args.image.resolve())])
         print(f"Capturing {args.scenario} replicate {args.replicate}; "
-              f"browser PIDs: {len(pids)}", flush=True)
+              f"browser PIDs before capture: {pids_before}", flush=True)
         capture = subprocess.run(command, capture_output=True, text=True, timeout=900)
         if capture.returncode or not args.image.exists() or not args.image.stat().st_size:
             raise RuntimeError(f"RAM capture failed: {capture.stderr[-1200:]}")
+        pids_after = browser_pids(browser)
+        control["browser_pids_after_capture"] = pids_after
+        stable_pids = [pid for pid in pids_before if pid in pids_after]
+        if not stable_pids:
+            raise RuntimeError(f"No Tor Browser PID survived capture: before={pids_before}, "
+                               f"after={pids_after}")
+        control["browser_pids"] = stable_pids
+        args.control.write_text(json.dumps(control, indent=2) + "\n", encoding="utf-8")
+        print(f"Browser PIDs after capture: {pids_after}", flush=True)
         print(f"Captured bytes: {os.path.getsize(args.image)}", flush=True)
     finally:
         driver.quit()

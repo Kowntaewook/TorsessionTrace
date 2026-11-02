@@ -43,7 +43,8 @@ def aggregate(paths, expected_os, expected_replicates):
             detected = sum(bool(row["target_detected_in_browser_memory"]) for row in group)
             requested = sum(row["target_http_requests"] > 0 for row in group)
             passed = sum(bool(row["protocol_pass"]) for row in group)
-            durations = [sum(scan["seconds"] for scan in row["scans"]) for row in group]
+            durations = [row.get("adapter_seconds_total", sum(scan.get("seconds", 0)
+                         for scan in row["scans"])) for row in group]
             summary.append({
                 "target_os": os_name,
                 "scenario": scenario,
