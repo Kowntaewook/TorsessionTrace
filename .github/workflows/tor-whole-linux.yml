@@ -54,7 +54,7 @@ jobs:
           curl -fLsS -o btf2json https://github.com/vobst/btf2json/releases/download/v0.1.0/btf2json
           chmod +x btf2json
           mkdir -p symbols/linux
-          ./btf2json --btf /sys/kernel/btf/vmlinux --map System.map > symbols/linux/current.json
+          ./btf2json --btf /sys/kernel/btf/vmlinux --map System.map --banner "$(cat /proc/version)" > symbols/linux/current.json
           python - <<'PY'
           from pathlib import Path
           import volatility3
