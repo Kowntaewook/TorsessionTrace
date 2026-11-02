@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+
+# Memory images and analysis output belong outside source control.
+*.raw
+*.mem
+*.dmp
+*.vmem
+*.lime
+*.hpak
+*.core
+*.core.gz
