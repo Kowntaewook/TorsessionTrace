@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "protocol_pass": true,
+  "protocol_failures": [],
+  "target_os": "linux",
+  "scenario": "clicked",
+  "replicate": 3,
+  "target_present_in_page": true,
+  "target_http_requests": 1,
+  "target_detected_in_browser_memory": true,
+  "target_hits": 21,
+  "absent_control_hits": 0,
+  "target_sha256": "cb83301e8f96cafb59eaa774cf51586722f0ff0aa7c98a2135b6fbf291217ff6",
+  "analysis_host": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+  "image_bytes": 7628110144,
+  "image_sha256": "04f8fbbed48c1e8e1c9c55b7bfb1cc0c0e527572d79806d117701176bbd6e31e",
+  "browser_binary_sha256": "cdcd40436a4aef8e3583b1d95fa3b6c18bffe6f26921283e197052c56c8ae593",
+  "browser_pids_recorded_live": [
+    2609,
+    2696,
+    2760,
+    2765,
+    2811,
+    2794,
+    2653,
+    2656,
+    2703,
+    2744
+  ],
+  "browser_pids_found_in_image": [
+    2609,
+    2696,
+    2760,
+    2765,
+    2811,
+    2794,
+    2653,
+    2656,
+    2703,
+    2744
+  ],
+  "browser_pids_missing_from_image": [],
+  "pslist_process_count": 168,
+  "pslist_seconds": 10.458,
+  "adapter_seconds_total": 120.09,
+  "exact_target_yara_baseline": {
+    "method": "Volatility process-scoped YARA exact known target",
+    "target_hits": 24,
+    "target_detected": true,
+    "seconds_total": 28.043
+  },
+  "scans": [
+    {
+      "pid": 2609,
+      "process": "firefox.real",
+      "string_hits": 2499,
+      "target_hits": 4,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2696,
+      "process": "Privileged Cont",
+      "string_hits": 389,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2760,
+      "process": "Isolated Web Co",
+      "string_hits": 467,
+      "target_hits": 17,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2765,
+      "process": "Web Content",
+      "string_hits": 251,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2811,
+      "process": "Web Content",
+      "string_hits": 253,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2794,
+      "process": "Web Content",
+      "string_hits": 248,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2653,
+      "process": "forkserver",
+      "string_hits": 57,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2656,
+      "process": "Socket Process",
+      "string_hits": 293,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2703,
+      "process": "RDD Process",
+      "string_hits": 207,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2744,
+      "process": "Utility Process",
+      "string_hits": 142,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    }
+  ]
+}

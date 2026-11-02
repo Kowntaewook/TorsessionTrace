@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "summary": [
+    {
+      "target_os": "linux",
+      "scenario": "absent",
+      "independent_captures": 3,
+      "target_detected_captures": 0,
+      "detection_fraction": 0.0,
+      "detection_wilson_95": [
+        0.0,
+        0.5615
+      ],
+      "http_requested_captures": 0,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 115.623,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 0,
+      "exact_target_yara_median_seconds": 28.683,
+      "image_sha256": [
+        "c7ed0ea6817a8f9d770d7cb712a307cc4f9baaf63be0c59475e5be06a858a8b6",
+        "dba3a9922a48a072ef9b6776df5228687d4ad986cb2f7039828f06f93477ca19",
+        "ed092ce3ba817678d380d98230268199c0a7b7758bc3e885ee3ba33b72fa56df"
+      ]
+    },
+    {
+      "target_os": "linux",
+      "scenario": "link_only",
+      "independent_captures": 3,
+      "target_detected_captures": 3,
+      "detection_fraction": 1.0,
+      "detection_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "http_requested_captures": 0,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 112.215,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 3,
+      "exact_target_yara_median_seconds": 28.219,
+      "image_sha256": [
+        "cd50d6274626013c667b72c6f6dbe44ccdba073c07a49c61f0507a9af2fa2043",
+        "138fbb0d278c3558214dca2dc01d3d95b609aaae914bca906056dd6319b39117",
+        "e6a27851d307d00872e4d5a81fd7c0ad516f9550785be4aed6599d3d4c5f7243"
+      ]
+    },
+    {
+      "target_os": "linux",
+      "scenario": "clicked",
+      "independent_captures": 3,
+      "target_detected_captures": 3,
+      "detection_fraction": 1.0,
+      "detection_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "http_requested_captures": 3,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 93.512,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 3,
+      "exact_target_yara_median_seconds": 22.995,
+      "image_sha256": [
+        "5bf81a73795d15e2330e64fc657ee5809c1837a2ec2f5508b63a80df67081306",
+        "f6e481e791985158ebd86c5224d95327062c0ef6b79410116340843e04bb05ed",
+        "04f8fbbed48c1e8e1c9c55b7bfb1cc0c0e527572d79806d117701176bbd6e31e"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "absent",
+      "independent_captures": 3,
+      "target_detected_captures": 0,
+      "detection_fraction": 0.0,
+      "detection_wilson_95": [
+        0.0,
+        0.5615
+      ],
+      "http_requested_captures": 0,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 112.041,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 0,
+      "exact_target_yara_median_seconds": 65.341,
+      "image_sha256": [
+        "283ce6a483af526113a21cdd321d3857e7d3827fc6b45f97ef7d0685ae769622",
+        "6d99419a3a65e4b8b75fc11a2aee75a02b92546232fec83c078b27e4b93c005e",
+        "d3a0de6496f03d358d4186b004dbe1ac5a4bbfea8e6830f7d000e97380497cbb"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "link_only",
+      "independent_captures": 3,
+      "target_detected_captures": 3,
+      "detection_fraction": 1.0,
+      "detection_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "http_requested_captures": 0,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 109.062,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 3,
+      "exact_target_yara_median_seconds": 71.973,
+      "image_sha256": [
+        "bb268049b7de1b1eeb5f97f6a594a90e1f3fed0c25748d7daefacb3da8833382",
+        "33a4d3b58611f5f250b0c28f5acffbd5895750daeecafd4dc84e96cd595f3f19",
+        "bbb308a20e1cff0e2c47a8c214cebd112b89496e8014324e8727e189461c5d8a"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "clicked",
+      "independent_captures": 3,
+      "target_detected_captures": 3,
+      "detection_fraction": 1.0,
+      "detection_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "http_requested_captures": 3,
+      "protocol_pass_captures": 3,
+      "median_all_browser_pid_scan_seconds": 111.544,
+      "exact_target_yara_available_captures": 3,
+      "exact_target_yara_detected_captures": 3,
+      "exact_target_yara_median_seconds": 65.579,
+      "image_sha256": [
+        "55d0c5426001d7d99dd3723605b56189454b19b1faf8d0657b1c512827d6e9b7",
+        "0372d6f030a21be69fd96325d504253a2a5d4e91e3af166f6952707ed6333fc0",
+        "73f9bc26dd0e0ad81235c7bcc0941f5081e693f8704bffc739a57bde2a863d72"
+      ]
+    }
+  ]
+}

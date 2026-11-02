@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "protocol_pass": true,
+  "protocol_failures": [],
+  "target_os": "windows",
+  "scenario": "clicked",
+  "replicate": 2,
+  "target_present_in_page": true,
+  "target_http_requests": 1,
+  "target_detected_in_browser_memory": true,
+  "target_hits": 53,
+  "absent_control_hits": 0,
+  "target_sha256": "eacdfbc996dcaa5053f5d66ff2ed47a30a5f78a6f52ef3b0246d450e9efe15b9",
+  "analysis_host": "Windows-2022Server-10.0.20348-SP0",
+  "image_bytes": 11811160064,
+  "image_sha256": "0372d6f030a21be69fd96325d504253a2a5d4e91e3af166f6952707ed6333fc0",
+  "browser_binary_sha256": "be563401b88e041c8cfdd42bdd594248993a29a19f77c61e850ad5406b61587a",
+  "browser_pids_recorded_live": [
+    2884,
+    7908,
+    5876,
+    5880,
+    4608,
+    1600,
+    7228,
+    7368,
+    2672
+  ],
+  "browser_pids_found_in_image": [
+    2884,
+    7908,
+    5876,
+    5880,
+    4608,
+    1600,
+    7228,
+    7368,
+    2672
+  ],
+  "browser_pids_missing_from_image": [],
+  "pslist_process_count": 154,
+  "pslist_seconds": 151.661,
+  "adapter_seconds_total": 116.584,
+  "exact_target_yara_baseline": {
+    "method": "Volatility process-scoped YARA exact known target",
+    "target_hits": 66,
+    "target_detected": true,
+    "seconds_total": 79.02
+  },
+  "scans": [
+    {
+      "pid": 2884,
+      "process": "firefox.exe",
+      "string_hits": 2294,
+      "target_hits": 34,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 7908,
+      "process": "firefox.exe",
+      "string_hits": 827,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 5876,
+      "process": "firefox.exe",
+      "string_hits": 807,
+      "target_hits": 19,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 5880,
+      "process": "firefox.exe",
+      "string_hits": 682,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 4608,
+      "process": "firefox.exe",
+      "string_hits": 670,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 1600,
+      "process": "firefox.exe",
+      "string_hits": 684,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 7228,
+      "process": "firefox.exe",
+      "string_hits": 55,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 7368,
+      "process": "firefox.exe",
+      "string_hits": 24,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2672,
+      "process": "firefox.exe",
+      "string_hits": 22,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    }
+  ]
+}

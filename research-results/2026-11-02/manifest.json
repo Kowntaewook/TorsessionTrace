@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "source_commit": "9c3c10e408240336b956d72f5b17c9ed5117694a",
+  "linux_workflow_run": 41458890257,
+  "windows_workflow_run": 41458889850,
+  "result_job_ids": {
+    "linux-absent-1.json": 125322539645,
+    "linux-absent-2.json": 125322539847,
+    "linux-absent-3.json": 125325360496,
+    "linux-link_only-1.json": 125325360503,
+    "linux-link_only-2.json": 125325360552,
+    "linux-link_only-3.json": 125322539785,
+    "linux-clicked-1.json": 125322539791,
+    "linux-clicked-2.json": 125322539642,
+    "linux-clicked-3.json": 125322539968,
+    "windows-absent-1.json": 125322538037,
+    "windows-absent-2.json": 125322537691,
+    "windows-absent-3.json": 125322538307,
+    "windows-link_only-1.json": 125322538096,
+    "windows-link_only-2.json": 125322537949,
+    "windows-link_only-3.json": 125322538274,
+    "windows-clicked-1.json": 125322538416,
+    "windows-clicked-2.json": 125322538104,
+    "windows-clicked-3.json": 125322538144
+  },
+  "technical_failures_before_replacement": [
+    {
+      "target_os": "linux",
+      "scenario": "absent",
+      "replicate": 3,
+      "job_id": 125322539291,
+      "cause_observed": "Adapter stopped because one recorded Tor Browser PID had no process memory sections in Volatility",
+      "replacement_job_id": 125325360496
+    },
+    {
+      "target_os": "linux",
+      "scenario": "link_only",
+      "replicate": 1,
+      "job_id": 125322539679,
+      "cause_observed": "Volatility linux.pslist returned no recorded Tor Browser PIDs",
+      "replacement_job_id": 125325360503
+    },
+    {
+      "target_os": "linux",
+      "scenario": "link_only",
+      "replicate": 2,
+      "job_id": 125322539956,
+      "cause_observed": "Volatility linux.pslist returned no recorded Tor Browser PIDs",
+      "replacement_job_id": 125325360552
+    }
+  ]
+}
