@@ -1,0 +1,53 @@
+name: Tor Browser memory benchmark
+
+on:
+  push:
+    paths:
+      - '.github/workflows/benchmark.yml'
+      - 'benchmarks/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tor-core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install benchmark dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gdb libdbus-glib-1-2 libgtk-3-0
+          python -m pip install 'volatility3==2.28.2' selenium pyelftools psutil
+      - name: Download and verify official Tor Browser 16.0
+        run: |
+          curl -fLsS -o tor-browser.tar.xz https://archive.torproject.org/tor-package-archive/torbrowser/16.0/tor-browser-linux-x86_64-16.0.tar.xz
+          curl -fLsS -o tor-browser.tar.xz.asc https://archive.torproject.org/tor-package-archive/torbrowser/16.0/tor-browser-linux-x86_64-16.0.tar.xz.asc
+          curl -fLsS -o geckodriver.tar.xz https://archive.torproject.org/tor-package-archive/torbrowser/16.0/geckodriver-linux-x86_64-16.0.tar.xz
+          curl -fLsS -o geckodriver.tar.xz.asc https://archive.torproject.org/tor-package-archive/torbrowser/16.0/geckodriver-linux-x86_64-16.0.tar.xz.asc
+          curl -fLsS -o tor-signing-key https://openpgpkey.torproject.org/.well-known/openpgpkey/torproject.org/hu/kounek7zrdx745qydx6p59t9mqjpuhdf
+          gpg --batch --import tor-signing-key
+          test "$(gpg --batch --with-colons --fingerprint torbrowser@torproject.org | awk -F: '$1=="fpr" {print $10; exit}')" = EF6E286DDA85EA2A4BA7DE684E2C6E8793298290
+          gpg --batch --output tor.keyring --export EF6E286DDA85EA2A4BA7DE684E2C6E8793298290
+          gpgv --keyring ./tor.keyring tor-browser.tar.xz.asc tor-browser.tar.xz
+          gpgv --keyring ./tor.keyring geckodriver.tar.xz.asc geckodriver.tar.xz
+          tar -xf tor-browser.tar.xz
+          tar -xf geckodriver.tar.xz
+          chmod +x geckodriver
+      - name: Capture Tor Browser process core and benchmark extraction
+        run: |
+          BROWSER=$(find "$PWD/tor-browser" -type f -name firefox | head -1)
+          test -n "$BROWSER"
+          python benchmarks/tor_core_benchmark.py --browser "$BROWSER" --driver "$PWD/geckodriver" --output benchmark-results.json
+      - name: Upload aggregate benchmark results only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tor-browser-core-benchmark
+          path: benchmark-results.json
+          if-no-files-found: ignore
