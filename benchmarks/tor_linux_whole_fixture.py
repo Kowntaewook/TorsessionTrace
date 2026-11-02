@@ -15,12 +15,14 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 
 
-def browser_pids(driver_pid):
-    parent = psutil.Process(driver_pid)
+def browser_pids(browser):
+    root = browser.parent.resolve()
     matches = []
-    for process in parent.children(recursive=True):
+    for process in psutil.process_iter():
         try:
-            if "firefox" in process.name().lower():
+            executable = process.exe()
+            if (executable and Path(executable).name.lower().startswith("firefox") and
+                    Path(executable).resolve().is_relative_to(root)):
                 matches.append((process.memory_info().rss, process.pid))
         except psutil.Error:
             continue
@@ -55,23 +57,27 @@ def main():
         if link not in driver.page_source:
             raise RuntimeError("Offline link was not rendered")
         time.sleep(2)
-        pids = browser_pids(driver.service.process.pid)
-        if not pids:
+        pids_before = browser_pids(browser)
+        if not pids_before:
             raise RuntimeError("No Tor Browser Firefox process found")
         controls = {
             "rendered_link_url": link,
             "absent_control_url": absent,
-            "browser_pids": pids,
+            "browser_pids": pids_before,
             "browser_binary_sha256": hashlib.sha256(browser.read_bytes()).hexdigest(),
         }
-        args.control.write_text(json.dumps(controls, indent=2) + "\n")
-        print(f"Capturing whole RAM with {len(pids)} Tor Browser processes", flush=True)
+        print(f"Capturing whole RAM with {len(pids_before)} Tor Browser processes", flush=True)
         capture = subprocess.run(
             ["sudo", "-n", str(args.avml.resolve()), "acquire", str(args.image.resolve())],
             text=True, capture_output=True, timeout=900,
         )
         if capture.returncode or not args.image.exists():
             raise RuntimeError(f"AVML failed: {capture.stderr[-1500:]}")
+        pids_after = browser_pids(browser)
+        controls["browser_pids"] = [pid for pid in pids_before if pid in pids_after]
+        if not controls["browser_pids"]:
+            raise RuntimeError("No Tor Browser PID survived capture")
+        args.control.write_text(json.dumps(controls, indent=2) + "\n")
         print(f"Whole RAM image bytes: {os.path.getsize(args.image)}", flush=True)
     finally:
         driver.quit()
