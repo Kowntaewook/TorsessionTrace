@@ -47,15 +47,13 @@ jobs:
           curl -fLsS -o avml https://github.com/microsoft/avml/releases/download/v0.21.0/avml
           echo 'e75597dcdcaaa8475fdc61643effb050f72aaa9cff677c7271386a9781bf4460  avml' | sha256sum --check
           chmod +x avml
-          ls -l /sys/kernel/btf/vmlinux "/boot/System.map-$(uname -r)" || true
-          ls -la /boot | head -20
-          sudo head -3 /proc/kallsyms
           test -r /sys/kernel/btf/vmlinux
-          test -r "/boot/System.map-$(uname -r)"
+          sudo cp "/boot/System.map-$(uname -r)" System.map
+          sudo chown "$USER" System.map
           curl -fLsS -o btf2json https://github.com/vobst/btf2json/releases/download/v0.1.0/btf2json
           chmod +x btf2json
           mkdir -p symbols/linux
-          ./btf2json --btf /sys/kernel/btf/vmlinux --map "/boot/System.map-$(uname -r)" > symbols/linux/current.json
+          ./btf2json --btf /sys/kernel/btf/vmlinux --map System.map > symbols/linux/current.json
           python - <<'PY'
           from pathlib import Path
           import volatility3
