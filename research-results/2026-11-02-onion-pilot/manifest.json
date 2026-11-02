@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "transport": "real_tor_v3_onion",
+  "source_commit": "07f2302a22c44f40a20ef169f6be47d9ba1c5443",
+  "network_preflight_run": 41461383444,
+  "linux_workflow_run": 41461754138,
+  "result_job_ids": {
+    "linux-absent-1.json": 125335555416,
+    "linux-link_only-1.json": 125332283915,
+    "linux-clicked-1.json": 125332283474
+  },
+  "technical_failures_before_replacement": [
+    {
+      "target_os": "linux",
+      "scenario": "absent",
+      "replicate": 1,
+      "job_id": 125332283873,
+      "cause_observed": "Volatility linux.pslist returned no recorded Tor Browser PIDs",
+      "replacement_job_id": 125335555416
+    }
+  ]
+}

@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         scenario: [absent, link_only, clicked]
-        replicate: [1]
+        replicate: [2, 3]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
