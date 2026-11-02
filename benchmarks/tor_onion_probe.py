@@ -36,15 +36,15 @@ def handler_for(state):
     return Handler
 
 
-def start_tor(name, root, lines):
+def start_tor(name, root, lines, binary="tor"):
     directory = root / name
     directory.mkdir(mode=0o700)
     data = directory / "data"
     data.mkdir(mode=0o700)
     config = directory / "torrc"
-    config.write_text("\n".join([f"DataDirectory {data}", "Log notice stdout", *lines]) + "\n")
+    config.write_text("\n".join([f"DataDirectory {data.as_posix()}", "Log notice stdout", *lines]) + "\n")
     logfile = (directory / "tor.log").open("w+")
-    process = subprocess.Popen(["tor", "-f", str(config)], stdout=logfile,
+    process = subprocess.Popen([str(binary), "-f", str(config)], stdout=logfile,
                                stderr=subprocess.STDOUT)
     return process, logfile
 
