@@ -1,7 +1,5 @@
 """Linux process VMA string artifacts, selected by investigator PID."""
 
-import logging
-
 from volatility3.framework import renderers
 from volatility3.framework.configuration import requirements
 from volatility3.framework.interfaces import plugins
@@ -9,9 +7,6 @@ from volatility3.framework.objects import utility
 from volatility3.framework.renderers import format_hints
 from volatility3.plugins.tor_session_trace import core
 from volatility3.plugins.linux import pslist
-
-
-log = logging.getLogger(__name__)
 
 
 class TorSessionTraceLinux(plugins.PluginInterface):
@@ -52,21 +47,20 @@ class TorSessionTraceLinux(plugins.PluginInterface):
         for task in tasks:
             pid = int(task.tgid)
             name = utility.array_to_string(task.comm)
-            try:
-                if not task.mm:
-                    continue
-                layer_name = task.add_process_layer()
-                if not layer_name:
-                    continue
-                sections = list(task.get_process_memory_sections())
-                for hit in core.scan_layer(
-                    self.context.layers[layer_name], self.context, sections,
-                    self._progress_callback, max_hits,
-                ):
-                    yield (0, (pid, name, format_hints.Hex(hit.offset),
-                               hit.encoding, hit.kind, hit.artifact, "E1:process_memory_string"))
-            except Exception as exc:
-                log.warning("PID %s could not be fully scanned: %s", pid, exc)
+            if not task.mm:
+                raise RuntimeError(f"PID {pid}: no user process memory map")
+            layer_name = task.add_process_layer()
+            if not layer_name:
+                raise RuntimeError(f"PID {pid}: process layer unavailable")
+            sections = list(task.get_process_memory_sections())
+            if not sections:
+                raise RuntimeError(f"PID {pid}: no process memory sections found")
+            for hit in core.scan_layer(
+                self.context.layers[layer_name], self.context, sections,
+                self._progress_callback, max_hits,
+            ):
+                yield (0, (pid, name, format_hints.Hex(hit.offset),
+                           hit.encoding, hit.kind, hit.artifact, "E1:process_memory_string"))
 
     def run(self):
         return renderers.TreeGrid(

@@ -1,0 +1,60 @@
+name: Whole-system image adapter validation
+
+on:
+  push:
+    paths:
+      - '.github/workflows/full-image-validation.yml'
+      - 'benchmarks/full_image_validation.py'
+      - 'plugins/tor_session_trace/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-image:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: linux
+            archive: linux-sample-1.bin.gz
+            image: linux-sample-1.bin
+            image_sha256: 910f272e5eeecdbf229e648d7b136a6722a11a5000f3995647364339417dfddd
+            symbols: linux.zip
+            symbols_sha256: 58bb7da2ed1e491ce922d04a59881d201e233b5605c9fd5a7f0c08ee528253c6
+          - target: windows
+            archive: win-10_19041-2025_03.dmp.gz
+            image: win-10_19041-2025_03.dmp
+            image_sha256: b377ecd13bf40c90f59a8c41ffc8bc81166462627a7800ec82a67a73520c7f9d
+            symbols: symbols_win-10_19041-2025_03.zip
+            symbols_sha256: abd6500fba6a59c9a7c21f2c4b8a4d7edc2da417ec3161311a19a0e0beffd94e
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install Volatility 3
+        run: python -m pip install 'volatility3==2.28.2'
+      - name: Download and verify official test image and symbols
+        shell: bash
+        run: |
+          mkdir -p test_data symbols
+          base=https://github.com/volatilityfoundation/volatility3-test-data/releases/download/v0.0.1
+          curl -fLsS --retry 3 -o "test_data/${{ matrix.archive }}" "$base/${{ matrix.archive }}"
+          echo '${{ matrix.image_sha256 }}  test_data/${{ matrix.archive }}' | sha256sum --check
+          gzip -d "test_data/${{ matrix.archive }}"
+          curl -fLsS --retry 3 -o "symbols/${{ matrix.symbols }}" "$base/${{ matrix.symbols }}"
+          echo '${{ matrix.symbols_sha256 }}  symbols/${{ matrix.symbols }}' | sha256sum --check
+          unzip -q "symbols/${{ matrix.symbols }}" -d symbols
+      - name: Validate adapter and measure end-to-end CLI time
+        run: python benchmarks/full_image_validation.py --target ${{ matrix.target }} --image "test_data/${{ matrix.image }}" --symbols symbols --output "${{ matrix.target }}-validation.json"
+      - name: Upload aggregate validation results only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-image-${{ matrix.target }}-validation
+          path: ${{ matrix.target }}-validation.json
+          if-no-files-found: ignore

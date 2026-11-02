@@ -1,7 +1,5 @@
 """Windows process VAD string artifacts, selected by investigator PID."""
 
-import logging
-
 from volatility3.framework import renderers
 from volatility3.framework.configuration import requirements
 from volatility3.framework.interfaces import plugins
@@ -9,9 +7,6 @@ from volatility3.framework.objects import utility
 from volatility3.framework.renderers import format_hints
 from volatility3.plugins.tor_session_trace import core
 from volatility3.plugins.windows import pslist
-
-
-log = logging.getLogger(__name__)
 
 
 class TorSessionTraceWindows(plugins.PluginInterface):
@@ -52,23 +47,22 @@ class TorSessionTraceWindows(plugins.PluginInterface):
         for proc in procs:
             pid = int(proc.UniqueProcessId)
             name = utility.array_to_string(proc.ImageFileName)
-            try:
-                layer_name = proc.add_process_layer()
-                if not layer_name:
-                    continue
-                sections = [
-                    (int(vad.get_start()), int(vad.get_size()))
-                    for vad in proc.get_vad_root().traverse()
-                    if vad.get_size() > 0
-                ]
-                for hit in core.scan_layer(
-                    self.context.layers[layer_name], self.context, sections,
-                    self._progress_callback, max_hits,
-                ):
-                    yield (0, (pid, name, format_hints.Hex(hit.offset),
-                               hit.encoding, hit.kind, hit.artifact, "E1:process_memory_string"))
-            except Exception as exc:
-                log.warning("PID %s could not be fully scanned: %s", pid, exc)
+            layer_name = proc.add_process_layer()
+            if not layer_name:
+                raise RuntimeError(f"PID {pid}: process layer unavailable")
+            sections = [
+                (int(vad.get_start()), int(vad.get_size()))
+                for vad in proc.get_vad_root().traverse()
+                if vad.get_size() > 0
+            ]
+            if not sections:
+                raise RuntimeError(f"PID {pid}: no readable VADs found")
+            for hit in core.scan_layer(
+                self.context.layers[layer_name], self.context, sections,
+                self._progress_callback, max_hits,
+            ):
+                yield (0, (pid, name, format_hints.Hex(hit.offset),
+                           hit.encoding, hit.kind, hit.artifact, "E1:process_memory_string"))
 
     def run(self):
         return renderers.TreeGrid(
