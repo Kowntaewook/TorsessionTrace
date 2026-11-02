@@ -11,6 +11,9 @@ import json
 import mmap
 import os
 import platform
+import select
+import socket
+import socketserver
 import statistics
 import subprocess
 import sys
@@ -127,6 +130,73 @@ def make_server(visited_path, link_only):
     return server
 
 
+def make_local_socks_proxy(allowed_port):
+    """Serve only the controlled loopback page through Tor Browser's SOCKS port."""
+
+    class Handler(socketserver.BaseRequestHandler):
+        def handle(self):
+            client = self.request
+            client.settimeout(15)
+
+            def take(count):
+                data = b""
+                while len(data) < count:
+                    part = client.recv(count - len(data))
+                    if not part:
+                        raise ConnectionError("SOCKS peer closed")
+                    data += part
+                return data
+
+            try:
+                version, methods = take(2)
+                if version != 5:
+                    return
+                offered = take(methods)
+                if 0 not in offered:
+                    client.sendall(b"\x05\xff")
+                    return
+                client.sendall(b"\x05\x00")
+                version, command, _, address_type = take(4)
+                if version != 5 or command != 1:
+                    return
+                if address_type == 1:
+                    host = socket.inet_ntop(socket.AF_INET, take(4))
+                elif address_type == 3:
+                    host = take(take(1)[0]).decode("ascii", errors="ignore")
+                elif address_type == 4:
+                    host = socket.inet_ntop(socket.AF_INET6, take(16))
+                else:
+                    return
+                port = int.from_bytes(take(2), "big")
+                if host not in ("127.0.0.1", "localhost") or port != allowed_port:
+                    client.sendall(b"\x05\x02\x00\x01\x00\x00\x00\x00\x00\x00")
+                    return
+                with socket.create_connection(("127.0.0.1", allowed_port), timeout=15) as upstream:
+                    client.sendall(b"\x05\x00\x00\x01\x7f\x00\x00\x01\x00\x00")
+                    client.settimeout(None)
+                    upstream.settimeout(None)
+                    peers = (client, upstream)
+                    while True:
+                        readable, _, _ = select.select(peers, [], [], 15)
+                        if not readable:
+                            break
+                        for source in readable:
+                            chunk = source.recv(65536)
+                            if not chunk:
+                                return
+                            (upstream if source is client else client).sendall(chunk)
+            except (OSError, ConnectionError, ValueError):
+                return
+
+    class Server(socketserver.ThreadingTCPServer):
+        allow_reuse_address = True
+        daemon_threads = True
+
+    proxy = Server(("127.0.0.1", 9150), Handler)
+    threading.Thread(target=proxy.serve_forever, daemon=True).start()
+    return proxy
+
+
 def browser_pids(driver_pid):
     parent = psutil.Process(driver_pid)
     children = parent.children(recursive=True)
@@ -152,12 +222,15 @@ def main():
     visited_path = f"/visited-{token}"
     link_only = f"https://link-only.invalid/{token}"
     server = make_server(visited_path, link_only)
+    proxy = make_local_socks_proxy(server.server_port)
     visited = f"http://127.0.0.1:{server.server_port}{visited_path}"
 
     options = Options()
     options.binary_location = str(args.browser.resolve())
     options.add_argument("-headless")
-    options.set_preference("network.proxy.type", 0)
+    options.set_preference("network.proxy.type", 1)
+    options.set_preference("network.proxy.socks", "127.0.0.1")
+    options.set_preference("network.proxy.socks_port", 9150)
     options.set_preference("browser.shell.checkDefaultBrowser", False)
     options.set_preference("app.update.enabled", False)
     options.set_preference("browser.aboutConfig.showWarning", False)
@@ -210,6 +283,7 @@ def main():
     finally:
         if driver is not None:
             driver.quit()
+        proxy.shutdown()
         server.shutdown()
         args.output.write_text(json.dumps(result, indent=2) + "\n")
         print(json.dumps(result, indent=2))
