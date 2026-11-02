@@ -42,16 +42,19 @@ def evaluate(args):
         })
     target_hits = sum(row["target_hits"] for row in scans)
     absent_hits = sum(row["absent_control_hits"] for row in scans)
+    failures = []
     if absent_hits:
-        raise RuntimeError("Absent control found in Tor Browser process memory")
+        failures.append("Absent control found in Tor Browser process memory")
     if scenario == "absent" and target_hits:
-        raise RuntimeError("Target found despite being absent from browser page")
+        failures.append("Target found despite being absent from browser page")
     if scenario != "absent" and not target_hits:
-        raise RuntimeError("Rendered target missing from Tor Browser process memory")
+        failures.append("Rendered target missing from Tor Browser process memory")
     if (scenario == "clicked") != (control["target_http_requests"] > 0):
-        raise RuntimeError("HTTP request ground truth disagrees with scenario")
+        failures.append("HTTP request ground truth disagrees with scenario")
     result = {
         "schema_version": 1,
+        "protocol_pass": not failures,
+        "protocol_failures": failures,
         "target_os": args.target,
         "scenario": scenario,
         "replicate": control["replicate"],
@@ -85,6 +88,8 @@ def main():
     result = evaluate(args)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, indent=2), flush=True)
+    if not result["protocol_pass"]:
+        raise SystemExit("Scenario protocol failed; aggregate result retained")
 
 
 if __name__ == "__main__":

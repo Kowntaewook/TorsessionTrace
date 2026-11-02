@@ -23,6 +23,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 
+from local_socks import LocalSocksHandler, LocalSocksServer
+
 
 SCENARIOS = ("absent", "link_only", "clicked")
 
@@ -88,13 +90,16 @@ def main():
     absent_url = base + f"/absent/{token}"
     server_thread = threading.Thread(target=server.serve_forever, daemon=True)
     server_thread.start()
+    socks = LocalSocksServer(("127.0.0.1", 9150), LocalSocksHandler)
+    socks.target_port = server.server_port
+    socks_thread = threading.Thread(target=socks.serve_forever, daemon=True)
+    socks_thread.start()
 
     browser = args.browser.resolve()
     options = Options()
     options.binary_location = str(browser)
     options.add_argument("-headless")
     options.set_preference("app.update.enabled", False)
-    options.set_preference("network.proxy.type", 0)
     driver = webdriver.Firefox(
         service=Service(executable_path=str(args.driver.resolve())), options=options
     )
@@ -111,8 +116,7 @@ def main():
                 raise RuntimeError("Browser did not navigate to target")
         time.sleep(2)
         request_count = state["target_requests"]
-        if (args.scenario == "clicked") != (request_count > 0):
-            raise RuntimeError("HTTP server ground truth disagrees with scenario")
+        print(f"Target HTTP requests: {request_count}", flush=True)
         pids = browser_pids(driver.service.process.pid)
         if not pids:
             raise RuntimeError("No Tor Browser Firefox process found")
@@ -138,6 +142,8 @@ def main():
         print(f"Captured bytes: {os.path.getsize(args.image)}", flush=True)
     finally:
         driver.quit()
+        socks.shutdown()
+        socks.server_close()
         server.shutdown()
         server.server_close()
 
