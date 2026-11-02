@@ -74,6 +74,7 @@ jobs:
           BROWSER=$(find "$PWD/tor-browser" -type f -name firefox | head -1)
           test -n "$BROWSER"
           python benchmarks/tor_linux_whole_fixture.py --browser "$BROWSER" --driver "$PWD/geckodriver" --avml "$PWD/avml" --image "$PWD/whole-ram.lime" --control "$PWD/control.json"
+          sudo chown "$USER" whole-ram.lime
       - name: Find Tor Browser and link through Linux adapter
         run: python benchmarks/tor_whole_image_validate.py --target linux --image whole-ram.lime --symbols symbols --control control.json --output linux-tor-whole-result.json
       - name: Upload aggregate metrics only
