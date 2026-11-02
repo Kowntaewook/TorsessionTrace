@@ -62,7 +62,7 @@ def browser_pids(browser):
     for process in psutil.process_iter():
         try:
             executable = process.exe()
-            if ("firefox" in process.name().lower() and executable and
+            if (executable and Path(executable).name.lower().startswith("firefox") and
                     Path(executable).resolve().is_relative_to(root)):
                 found.append((process.memory_info().rss, process.pid))
         except psutil.Error:

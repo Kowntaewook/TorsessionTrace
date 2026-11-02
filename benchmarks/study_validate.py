@@ -22,6 +22,7 @@ def evaluate(args):
     pslist, pslist_seconds = run_vol(common, f"{args.target}.pslist")
     process_map = {int(r["PID"]): r for r in pslist if isinstance(r.get("PID"), int)}
     pids = [int(pid) for pid in control["browser_pids"] if int(pid) in process_map]
+    missing_pids = [int(pid) for pid in control["browser_pids"] if int(pid) not in process_map]
     if not pids:
         candidates = [(r.get("PID"), r.get("ImageFileName", r.get("COMM")))
                       for r in pslist if "firefox" in str(r.get("ImageFileName", r.get("COMM", ""))).lower()]
@@ -48,6 +49,8 @@ def evaluate(args):
     target_hits = sum(row["target_hits"] for row in scans)
     absent_hits = sum(row["absent_control_hits"] for row in scans)
     failures = []
+    if missing_pids:
+        failures.append(f"Captured browser PIDs missing from pslist: {missing_pids}")
     if absent_hits:
         failures.append("Absent control found in Tor Browser process memory")
     if scenario == "absent" and target_hits:
@@ -75,6 +78,7 @@ def evaluate(args):
         "browser_binary_sha256": control["browser_binary_sha256"],
         "browser_pids_recorded_live": control["browser_pids"],
         "browser_pids_found_in_image": pids,
+        "browser_pids_missing_from_image": missing_pids,
         "pslist_process_count": len(pslist),
         "pslist_seconds": pslist_seconds,
         "adapter_seconds_total": adapter_seconds_total,
