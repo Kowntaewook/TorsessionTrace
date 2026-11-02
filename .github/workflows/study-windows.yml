@@ -1,0 +1,71 @@
+name: Tor Browser memory evidence study - Windows
+
+on:
+  push:
+    paths:
+      - '.github/workflows/study-windows.yml'
+      - 'benchmarks/study_fixture.py'
+      - 'benchmarks/study_validate.py'
+      - 'plugins/tor_session_trace/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-study:
+    runs-on: windows-2022
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario: [absent, link_only, clicked]
+        replicate: [1]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install analysis and browser dependencies
+        run: python -m pip install 'volatility3==2.28.2' selenium psutil
+      - name: Download Tor Browser 16.0, geckodriver, and WinPmem
+        shell: pwsh
+        run: |
+          curl.exe -fLsS --retry 3 -o tor-browser-portable.exe https://archive.torproject.org/tor-package-archive/torbrowser/16.0/tor-browser-windows-x86_64-portable-16.0.exe
+          if ($LASTEXITCODE -ne 0) { throw 'Tor Browser download failed' }
+          curl.exe -fLsS --retry 3 -o tor-sha256.txt https://archive.torproject.org/tor-package-archive/torbrowser/16.0/sha256sums-signed-build.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Tor checksum download failed' }
+          $line = Get-Content tor-sha256.txt | Where-Object { $_ -match 'tor-browser-windows-x86_64-portable-16\.0\.exe$' } | Select-Object -First 1
+          if (-not $line) { throw 'Tor Browser missing from official checksum list' }
+          $expected = ($line -split '\s+')[0].ToLowerInvariant()
+          $actual = (Get-FileHash tor-browser-portable.exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($expected -ne $actual) { throw 'Tor Browser SHA-256 mismatch' }
+          curl.exe -fLsS --retry 3 -o geckodriver.zip https://github.com/mozilla/geckodriver/releases/download/v0.37.1/geckodriver-v0.37.1-win64.zip
+          if ($LASTEXITCODE -ne 0) { throw 'geckodriver download failed' }
+          if ((Get-FileHash geckodriver.zip -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'dfed9315abe8d2fbc1b6161a2ee8002452e79cf05ee92fdc653a4e26bc35edd8') { throw 'geckodriver SHA-256 mismatch' }
+          Expand-Archive geckodriver.zip -DestinationPath . -Force
+          curl.exe -fLsS --retry 3 -o winpmem.exe https://github.com/Velocidex/WinPmem/releases/download/v4.0.rc1/go-winpmem_amd64_1.0-rc2_signed.exe
+          if ($LASTEXITCODE -ne 0) { throw 'WinPmem download failed' }
+          $sig = Get-AuthenticodeSignature .\winpmem.exe
+          Write-Host "WinPmem Authenticode: $($sig.Status)"
+      - name: Capture an independent scenario RAM image
+        shell: pwsh
+        run: |
+          & 'C:\Program Files\7-Zip\7z.exe' x -y tor-browser-portable.exe '-otor-browser-extracted' | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw 'Could not extract Tor Browser' }
+          $browser = Get-ChildItem tor-browser-extracted -Recurse -Filter firefox.exe | Select-Object -First 1 -ExpandProperty FullName
+          if (-not $browser) { throw 'No Tor Browser firefox.exe found' }
+          python benchmarks/study_fixture.py --scenario '${{ matrix.scenario }}' --replicate '${{ matrix.replicate }}' --browser "$browser" --driver "$PWD/geckodriver.exe" --capture-tool "$PWD/winpmem.exe" --image "$PWD/whole-ram.raw" --control "$PWD/control.json"
+      - name: Measure target recovery through Windows adapter
+        run: python benchmarks/study_validate.py --target windows --image whole-ram.raw --control control.json --output study-result.json
+      - name: Upload aggregate metrics only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-${{ matrix.scenario }}-${{ matrix.replicate }}
+          path: study-result.json
+          if-no-files-found: ignore
+      - name: Remove local RAM capture
+        if: always()
+        shell: pwsh
+        run: Remove-Item whole-ram.raw -Force -ErrorAction SilentlyContinue
