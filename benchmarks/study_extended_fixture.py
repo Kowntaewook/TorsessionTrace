@@ -160,10 +160,29 @@ def main():
                     service=Service(executable_path=str(args.driver.resolve())), options=options,
                 )
                 driver.set_page_load_timeout(120)
-                try:
-                    driver.get(base + "/landing")
-                except Exception:
-                    raise RuntimeError("Tor Browser could not load onion landing page") from None
+                expected_page_fragment = {
+                    "absent": "Control landing page",
+                    "text_only": state["target_url"],
+                    "input_field": "draft",
+                    "background_link": state["target_url"],
+                    "clicked": state["target_url"],
+                }[args.scenario]
+                landing_attempts = 0
+                for landing_attempts in range(1, 4):
+                    try:
+                        driver.get(base + "/landing")
+                        source = driver.page_source
+                    except Exception:
+                        try:
+                            source = driver.page_source
+                        except Exception:
+                            source = ""
+                    if (state["landing_requests"] >= 1 and
+                            expected_page_fragment in source):
+                        break
+                    time.sleep(3)
+                else:
+                    raise RuntimeError("Tor Browser could not load onion landing page in three attempts")
                 if state["landing_requests"] < 1:
                     raise RuntimeError("Onion landing request not observed by service")
                 if args.scenario in ("text_only", "background_link", "clicked"):
@@ -212,6 +231,7 @@ def main():
                     "onion_landing_requests": state["landing_requests"],
                     "onion_readiness_requests": state["readiness_requests"],
                     "onion_readiness_curl_attempts": ready_attempts,
+                    "browser_landing_attempts": landing_attempts,
                     "neutral_requests": state["neutral_requests"],
                     "presentation": args.scenario,
                     "onion_hostname_sha256": hashlib.sha256(hostname.encode()).hexdigest(),

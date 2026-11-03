@@ -2,6 +2,8 @@
 
 **Status before results:** this protocol and the fixed generic YARA expression are committed before the first extended browser capture. The experiment uses the same Tor Browser 16.0, GitHub-hosted Ubuntu 24.04 and Windows Server 2022 x86-64, AVML/WinPmem, and Volatility 3 2.28.2 setup as the preceding [onion study](onion-study-protocol.md).
 
+**Technical amendment after first pilot attempts:** a validator omitted the optional `baseline_yara` argument, causing analysis to stop after RAM acquisition. That argument was set to false and the pilot was restarted. A second amendment allows up to three Tor Browser landing-page attempts and records the count, because some jobs reached the onion service with curl but the first browser navigation failed. These are pipeline repairs; neither changes the target-blind rule, scenarios, request truth, or scoring.
+
 ## Question and unit
 
 An independent fresh runner and whole-RAM image is one unit. Obtain three analyzable images for each OS × scenario cell, with a one-per-cell pilot before the remaining replicates. Five scenarios yield 30 analyzable images if all cells fill. Failed pre-capture or analysis attempts are recorded and replaced with fresh captures; they are never scored as negative detections. Report both attempt counts and conditional-on-analyzability results.

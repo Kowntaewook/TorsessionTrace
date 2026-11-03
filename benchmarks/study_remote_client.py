@@ -94,10 +94,21 @@ def main():
                 service=Service(executable_path=str(args.driver.resolve())), options=options,
             )
             driver.set_page_load_timeout(120)
-            try:
-                driver.get(f"{base}/landing/{args.target_os}/{args.scenario}")
-            except Exception:
-                raise RuntimeError("Tor Browser could not load remote onion landing page") from None
+            landing_attempts = 0
+            for landing_attempts in range(1, 4):
+                try:
+                    driver.get(f"{base}/landing/{args.target_os}/{args.scenario}")
+                    source = driver.page_source
+                except Exception:
+                    try:
+                        source = driver.page_source
+                    except Exception:
+                        source = ""
+                if target in source:
+                    break
+                time.sleep(3)
+            else:
+                raise RuntimeError("Tor Browser could not load remote onion landing page in three attempts")
             if target not in driver.page_source:
                 raise RuntimeError("Remote onion target link missing from browser page")
             if args.scenario == "clicked":
@@ -136,6 +147,7 @@ def main():
                 "onion_landing_requests": status["landing_requests"],
                 "onion_readiness_requests": status["ready_requests"],
                 "onion_readiness_curl_attempts": ready_attempts,
+                "browser_landing_attempts": landing_attempts,
                 "onion_hostname_sha256": hashlib.sha256(hostname.encode()).hexdigest(),
                 "tor_version": subprocess.check_output(
                     [str(tor_binary), "--version"], text=True,

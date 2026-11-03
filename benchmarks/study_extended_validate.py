@@ -100,6 +100,7 @@ def main():
         "onion_readiness_requests": control["onion_readiness_requests"],
         "onion_landing_requests": control["onion_landing_requests"],
         "onion_readiness_curl_attempts": control["onion_readiness_curl_attempts"],
+        "browser_landing_attempts": control.get("browser_landing_attempts", 1),
         "neutral_requests": control["neutral_requests"],
     }
     result["protocol_pass"] = not result["protocol_failures"]

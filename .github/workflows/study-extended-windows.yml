@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         scenario: [absent, text_only, input_field, background_link, clicked]
-        replicate: [1]
+        replicate: [2, 3]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
