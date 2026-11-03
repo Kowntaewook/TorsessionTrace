@@ -2,17 +2,12 @@
   "schema_version": 1,
   "expected_replicates": 10,
   "expected_images": 60,
-  "selected_images": 36,
+  "selected_images": 42,
   "complete": false,
   "missing_cells": [
     [
       "linux",
       "absent",
-      7
-    ],
-    [
-      "linux",
-      "absent",
       8
     ],
     [
@@ -24,11 +19,6 @@
       "linux",
       "absent",
       10
-    ],
-    [
-      "linux",
-      "clicked",
-      7
     ],
     [
       "linux",
@@ -48,11 +38,6 @@
     [
       "linux",
       "link_only",
-      7
-    ],
-    [
-      "linux",
-      "link_only",
       8
     ],
     [
@@ -64,11 +49,6 @@
       "linux",
       "link_only",
       10
-    ],
-    [
-      "windows",
-      "absent",
-      7
     ],
     [
       "windows",
@@ -88,11 +68,6 @@
     [
       "windows",
       "clicked",
-      7
-    ],
-    [
-      "windows",
-      "clicked",
       8
     ],
     [
@@ -104,11 +79,6 @@
       "windows",
       "clicked",
       10
-    ],
-    [
-      "windows",
-      "link_only",
-      7
     ],
     [
       "windows",
@@ -203,6 +173,150 @@
       "schema_version": 1,
       "target_os": "linux",
       "scenario": "absent",
+      "replicate": 7,
+      "service_run_id": "41572092476",
+      "client_run_id": "41572140978",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "failure",
+      "analysis_outcome": "skipped"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "linux",
+      "scenario": "clicked",
+      "replicate": 7,
+      "service_run_id": "41572092476",
+      "client_run_id": "41572140978",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "failure"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "linux",
+      "scenario": "link_only",
+      "replicate": 7,
+      "service_run_id": "41572092476",
+      "client_run_id": "41572140978",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "absent",
+      "replicate": 7,
+      "service_run_id": "41572092476",
+      "client_run_id": "41572140978",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "clicked",
+      "replicate": 7,
+      "service_run_id": "41572092476",
+      "client_run_id": "41572140978",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "link_only",
+      "replicate": 7,
+      "service_run_id": "41572092476",
+      "client_run_id": "41572140978",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "linux",
+      "scenario": "absent",
+      "replicate": 7,
+      "service_run_id": "41573321039",
+      "client_run_id": "41573364273",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "linux",
+      "scenario": "clicked",
+      "replicate": 7,
+      "service_run_id": "41573321039",
+      "client_run_id": "41573364273",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "linux",
+      "scenario": "link_only",
+      "replicate": 7,
+      "service_run_id": "41573321039",
+      "client_run_id": "41573364273",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "absent",
+      "replicate": 7,
+      "service_run_id": "41573321039",
+      "client_run_id": "41573364273",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "clicked",
+      "replicate": 7,
+      "service_run_id": "41573321039",
+      "client_run_id": "41573364273",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "link_only",
+      "replicate": 7,
+      "service_run_id": "41573321039",
+      "client_run_id": "41573364273",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "linux",
+      "scenario": "absent",
       "replicate": 1,
       "service_run_id": "41561713585",
       "client_run_id": "41561768611",
@@ -274,6 +388,18 @@
     {
       "schema_version": 1,
       "target_os": "linux",
+      "scenario": "absent",
+      "replicate": 7,
+      "service_run_id": "41570823405",
+      "client_run_id": "41570864238",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "linux",
       "scenario": "clicked",
       "replicate": 1,
       "service_run_id": "41561713585",
@@ -346,6 +472,18 @@
     {
       "schema_version": 1,
       "target_os": "linux",
+      "scenario": "clicked",
+      "replicate": 7,
+      "service_run_id": "41570823405",
+      "client_run_id": "41570864238",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "failure"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "linux",
       "scenario": "link_only",
       "replicate": 1,
       "service_run_id": "41561713585",
@@ -417,6 +555,18 @@
     },
     {
       "schema_version": 1,
+      "target_os": "linux",
+      "scenario": "link_only",
+      "replicate": 7,
+      "service_run_id": "41570823405",
+      "client_run_id": "41570864238",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "failure"
+    },
+    {
+      "schema_version": 1,
       "target_os": "windows",
       "scenario": "absent",
       "replicate": 1,
@@ -490,6 +640,18 @@
     {
       "schema_version": 1,
       "target_os": "windows",
+      "scenario": "absent",
+      "replicate": 7,
+      "service_run_id": "41570823405",
+      "client_run_id": "41570864238",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
       "scenario": "clicked",
       "replicate": 1,
       "service_run_id": "41561713585",
@@ -556,6 +718,18 @@
       "client_run_id": "41569407744",
       "client_run_attempt": "1",
       "source_sha": "2185843610cdc392e3bd6d3e03c305a6dfb9d7b7",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "clicked",
+      "replicate": 7,
+      "service_run_id": "41570823405",
+      "client_run_id": "41570864238",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
       "capture_outcome": "success",
       "analysis_outcome": "success"
     },
@@ -630,6 +804,18 @@
       "source_sha": "2185843610cdc392e3bd6d3e03c305a6dfb9d7b7",
       "capture_outcome": "success",
       "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "link_only",
+      "replicate": 7,
+      "service_run_id": "41570823405",
+      "client_run_id": "41570864238",
+      "client_run_attempt": "1",
+      "source_sha": "e56bd736da53ec96afaed9814e662f2065f222f0",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
     }
   ],
   "excluded_results": [
@@ -688,33 +874,106 @@
       ],
       "service_run_id": "41564036102",
       "image_sha256": "310605a0c50161fd25140a63f7ee92fbdf5167414468c05dce98d8bdf87a6676"
+    },
+    {
+      "cell": [
+        "windows",
+        "absent",
+        7
+      ],
+      "service_run_id": "41572092476",
+      "image_sha256": "0aee6ad2737a0f39c3d8c39f86e2eddf55e7296df455873e98bd47b6745c188d"
+    },
+    {
+      "cell": [
+        "windows",
+        "clicked",
+        7
+      ],
+      "service_run_id": "41572092476",
+      "image_sha256": "7a2b96dc063c757141b732c58f4d51e10050df5d61b6b2061f6ec122376dfc37"
+    },
+    {
+      "cell": [
+        "windows",
+        "link_only",
+        7
+      ],
+      "service_run_id": "41572092476",
+      "image_sha256": "7f3b3d8d5cce01fe0e21e0b57c250e99b2c5a12e03e3b0b2380ed6bef237f6b8"
+    },
+    {
+      "cell": [
+        "linux",
+        "absent",
+        7
+      ],
+      "service_run_id": "41573321039",
+      "image_sha256": "5bdba276209f07dc837cb2bccedca0be76f6808d033b7c530501612783d32826"
+    },
+    {
+      "cell": [
+        "linux",
+        "link_only",
+        7
+      ],
+      "service_run_id": "41573321039",
+      "image_sha256": "a2f66cb9942e620eb5e1817bab66b1b5468045d17a829e847cb0e5e0d566f897"
+    },
+    {
+      "cell": [
+        "windows",
+        "absent",
+        7
+      ],
+      "service_run_id": "41573321039",
+      "image_sha256": "cd2c7f6ffe267338d58d122cf90d186a07442998830a278121ca32883cd82fd5"
+    },
+    {
+      "cell": [
+        "windows",
+        "clicked",
+        7
+      ],
+      "service_run_id": "41573321039",
+      "image_sha256": "2bfdee3586627d723ffcc035b029e83db756e7c7723c8b5f0cd7157e5767d9ab"
+    },
+    {
+      "cell": [
+        "windows",
+        "link_only",
+        7
+      ],
+      "service_run_id": "41573321039",
+      "image_sha256": "262b112471ec60040d8f495b9a0f7cc4936296b9c6d15f4e6ee4974481e52791"
     }
   ],
   "summary": [
     {
       "target_os": "linux",
       "scenario": "absent",
-      "selected_images": 6,
+      "selected_images": 7,
       "adapter_detected": 0,
       "adapter_wilson_95": [
         0.0,
-        0.3903
+        0.3543
       ],
       "blind_yara_detected": 0,
       "blind_yara_wilson_95": [
         0.0,
-        0.3903
+        0.3543
       ],
-      "image_level_agreement": 6,
-      "median_adapter_seconds": 116.386,
-      "median_blind_yara_seconds": 28.018,
+      "image_level_agreement": 7,
+      "median_adapter_seconds": 115.597,
+      "median_blind_yara_seconds": 28.198,
       "service_run_ids": [
         "41561713585",
         "41562876333",
         "41565273311",
         "41566715751",
         "41567808325",
-        "41569311146"
+        "41569311146",
+        "41570823405"
       ],
       "image_sha256": [
         "fcad46449ff391d3938634b77cdb8aff84d19f86c91bdfd1d320d52c21a737b0",
@@ -722,33 +981,35 @@
         "54acf08d9f907d941b3faabf0bd031d8110a845b47ea2ff9bc4e0911bc430717",
         "0ddf6500f7d36b003206892a7c277b0fde80748b5adfbb140bf5852dfbaf7e6a",
         "e8025d9ebef976909b523f55364a03a2a3be88d9586f7a1931d0e70b3b7ba47e",
-        "65b87f543b57b31ba2a0b2d25713c6d583c57aa6a704bfa6263c3ab3573fa234"
+        "65b87f543b57b31ba2a0b2d25713c6d583c57aa6a704bfa6263c3ab3573fa234",
+        "b12477a8d69b371b31cd57c6541038a76983b9a875904a40e5ca7b3508d82b7c"
       ]
     },
     {
       "target_os": "linux",
       "scenario": "link_only",
-      "selected_images": 6,
-      "adapter_detected": 6,
+      "selected_images": 7,
+      "adapter_detected": 7,
       "adapter_wilson_95": [
-        0.6097,
+        0.6457,
         1.0
       ],
-      "blind_yara_detected": 6,
+      "blind_yara_detected": 7,
       "blind_yara_wilson_95": [
-        0.6097,
+        0.6457,
         1.0
       ],
-      "image_level_agreement": 6,
-      "median_adapter_seconds": 92.799,
-      "median_blind_yara_seconds": 22.556,
+      "image_level_agreement": 7,
+      "median_adapter_seconds": 121.74,
+      "median_blind_yara_seconds": 28.527,
       "service_run_ids": [
         "41561713585",
         "41562876333",
         "41565273311",
         "41566715751",
         "41567808325",
-        "41569311146"
+        "41569311146",
+        "41572092476"
       ],
       "image_sha256": [
         "f0c3c0450363b6bbb63201e539f3981b03051a315f19938c99ba2af532f380b4",
@@ -756,33 +1017,35 @@
         "2a4c0399d396c8fb0698fb241769c0ca0d32b6431964e4a32ecd31bffc9bf6e9",
         "2b6bbe16a2955a0f3669486eba97ccc0c5e4319afd8fcfe1dab33c8f8e3bb32f",
         "6e92e4304d974b35efbef819af2bdf013a185ab8aa3462efa1a8c4f76371ad07",
-        "0e1689719cd57134c6952d59c8c775074278948392355e7e66bc4a30ab11428f"
+        "0e1689719cd57134c6952d59c8c775074278948392355e7e66bc4a30ab11428f",
+        "1dc3d37358d92aba1efc6bba2c47a2948ee18198b65f4cdd3f6e061cab0e23da"
       ]
     },
     {
       "target_os": "linux",
       "scenario": "clicked",
-      "selected_images": 6,
-      "adapter_detected": 6,
+      "selected_images": 7,
+      "adapter_detected": 7,
       "adapter_wilson_95": [
-        0.6097,
+        0.6457,
         1.0
       ],
-      "blind_yara_detected": 6,
+      "blind_yara_detected": 7,
       "blind_yara_wilson_95": [
-        0.6097,
+        0.6457,
         1.0
       ],
-      "image_level_agreement": 6,
-      "median_adapter_seconds": 77.72,
-      "median_blind_yara_seconds": 20.373,
+      "image_level_agreement": 7,
+      "median_adapter_seconds": 86.875,
+      "median_blind_yara_seconds": 22.415,
       "service_run_ids": [
         "41561713585",
         "41562876333",
         "41565273311",
         "41566715751",
         "41567808325",
-        "41569311146"
+        "41569311146",
+        "41573321039"
       ],
       "image_sha256": [
         "ea38056c09b1852ad73f8ee0cf060383ac6cadac962520a9ed50c26bc025beb7",
@@ -790,33 +1053,35 @@
         "78ddc1c38815698518fc74e80ecffacc4782ab3d52ca5034ce3ad8346166c61b",
         "c877736392fe46264b71130416c71f433e0b6e82e9316dbcecb4b598e22090c0",
         "6786543d52b20c4376d2905199b802d031ff8f67b3a2bc81b8ade3be5fa6be68",
-        "d63e8428ab1f08414ab9efb7c5890775a9a0d2d7246525e914131389e1a2ebff"
+        "d63e8428ab1f08414ab9efb7c5890775a9a0d2d7246525e914131389e1a2ebff",
+        "781c51bbb1c908c4462dec0dc2e1cf77e4b30d9f1cd3a326103276e146642703"
       ]
     },
     {
       "target_os": "windows",
       "scenario": "absent",
-      "selected_images": 6,
+      "selected_images": 7,
       "adapter_detected": 0,
       "adapter_wilson_95": [
         0.0,
-        0.3903
+        0.3543
       ],
       "blind_yara_detected": 0,
       "blind_yara_wilson_95": [
         0.0,
-        0.3903
+        0.3543
       ],
-      "image_level_agreement": 6,
-      "median_adapter_seconds": 125.019,
-      "median_blind_yara_seconds": 77.175,
+      "image_level_agreement": 7,
+      "median_adapter_seconds": 123.006,
+      "median_blind_yara_seconds": 77.023,
       "service_run_ids": [
         "41561713585",
         "41562876333",
         "41565273311",
         "41566715751",
         "41567808325",
-        "41569311146"
+        "41569311146",
+        "41570823405"
       ],
       "image_sha256": [
         "b8811a173acc23276f1a932424898ff722baac019d1f0b84d5a2850eeca7a481",
@@ -824,33 +1089,35 @@
         "9d87253f90a40b0355541c3df697f7b59ac59809baf9735b8a6bc9e408210123",
         "fb5b22dda106cbd43ed36d5319abb06b57c546cabf471805121218e164a3a1e0",
         "ffc1703349b28e30e7fb899a767bd0933cb44f4b20f58e8d5c537df0916afb0a",
-        "4b74124f0a40653614ec8d9f049211bfc0470c6afdef735bb09bcbcd271b9e82"
+        "4b74124f0a40653614ec8d9f049211bfc0470c6afdef735bb09bcbcd271b9e82",
+        "a9c56b8b01bd53935df782b6ba574f531c9a38337daec1afb10d27d20ee2e070"
       ]
     },
     {
       "target_os": "windows",
       "scenario": "link_only",
-      "selected_images": 6,
-      "adapter_detected": 6,
+      "selected_images": 7,
+      "adapter_detected": 7,
       "adapter_wilson_95": [
-        0.6097,
+        0.6457,
         1.0
       ],
-      "blind_yara_detected": 6,
+      "blind_yara_detected": 7,
       "blind_yara_wilson_95": [
-        0.6097,
+        0.6457,
         1.0
       ],
-      "image_level_agreement": 6,
-      "median_adapter_seconds": 99.46,
-      "median_blind_yara_seconds": 64.343,
+      "image_level_agreement": 7,
+      "median_adapter_seconds": 89.178,
+      "median_blind_yara_seconds": 60.705,
       "service_run_ids": [
         "41561713585",
         "41564036102",
         "41565273311",
         "41566715751",
         "41567808325",
-        "41569311146"
+        "41569311146",
+        "41570823405"
       ],
       "image_sha256": [
         "17959bc11f3b2f11865a66b1847beed33ba1cea77f4a6cb54fb0953dbac030ac",
@@ -858,33 +1125,35 @@
         "fd4503edca87e2260b1069968b9c43b63b93f6b2785d5f8aa0fba3c4edddec93",
         "45044466dbb5e08b8714c198343372e629cef1fe968133a433263f463f5a6c46",
         "3fcdfb355e04806465c7380c4dcdeeede67069c8134a276e660c22ed540c637a",
-        "b6ed0e68fe433337c0c2e2d36df75b841c2e5e1ba6712d7734cd9488acce71fd"
+        "b6ed0e68fe433337c0c2e2d36df75b841c2e5e1ba6712d7734cd9488acce71fd",
+        "c303c036f223f181d0d2e35d1401b2711b645405622337a8abd8f8608d6c4431"
       ]
     },
     {
       "target_os": "windows",
       "scenario": "clicked",
-      "selected_images": 6,
-      "adapter_detected": 6,
+      "selected_images": 7,
+      "adapter_detected": 7,
       "adapter_wilson_95": [
-        0.6097,
+        0.6457,
         1.0
       ],
-      "blind_yara_detected": 6,
+      "blind_yara_detected": 7,
       "blind_yara_wilson_95": [
-        0.6097,
+        0.6457,
         1.0
       ],
-      "image_level_agreement": 6,
-      "median_adapter_seconds": 117.58,
-      "median_blind_yara_seconds": 71.523,
+      "image_level_agreement": 7,
+      "median_adapter_seconds": 118.104,
+      "median_blind_yara_seconds": 72.766,
       "service_run_ids": [
         "41561713585",
         "41562876333",
         "41565273311",
         "41566715751",
         "41567808325",
-        "41569311146"
+        "41569311146",
+        "41570823405"
       ],
       "image_sha256": [
         "1acade408ee4b45a8a735e1a303996282ded3d8d669c7077a23072e3be3a8c7f",
@@ -892,7 +1161,8 @@
         "eebdddb6530aeb13f9a6c04267f1a30170cf30f5fbcb3121b7a87775298fcc4c",
         "580f81572c182af88ff5cc734327a0b98ac79d467ba4f100ad63ca2aa75a44ea",
         "035e39e4f02771346c7661bccbe97a343d66efd21609b2fb65754316cc2792da",
-        "aa5e170e091e953d2377de6a603b06a87fba86b42adfb9e853d1548233c31902"
+        "aa5e170e091e953d2377de6a603b06a87fba86b42adfb9e853d1548233c31902",
+        "95205c309d77c7d5d38a980ffdb156d11ddb81a4152d864ffb26bb19c0e16517"
       ]
     }
   ]
