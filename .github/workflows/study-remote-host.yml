@@ -1,0 +1,37 @@
+name: Remote-host onion study - service runner
+
+on:
+  push:
+    paths:
+      - '.github/workflows/study-remote-host.yml'
+      - '.github/workflows/study-remote-client.yml'
+      - 'benchmarks/study_remote_service.py'
+      - 'benchmarks/study_remote_client.py'
+      - 'benchmarks/study_remote_validate.py'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  remote-onion-service:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 80
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install Tor service
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y tor
+      - name: Run independent onion service and dispatch client runners
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 benchmarks/study_remote_service.py --tor-binary /usr/bin/tor --output remote-service-result.json --timeout-seconds 3300
+      - name: Upload service-side request ground truth
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: remote-onion-service-result
+          path: remote-service-result.json
+          if-no-files-found: ignore
