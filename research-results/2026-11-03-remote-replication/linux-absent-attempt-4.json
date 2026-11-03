@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "target_os": "linux",
+  "scenario": "absent",
+  "replicate": 4,
+  "service_run_id": "41566715751",
+  "client_run_id": "41566763043",
+  "client_run_attempt": "1",
+  "source_sha": "976fc24c2721023ede4e5d3c4e3947866de90ccd",
+  "capture_outcome": "success",
+  "analysis_outcome": "success"
+}

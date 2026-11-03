@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "service_host": "separate GitHub-hosted Ubuntu runner",
+  "service_run_id": "41570823405",
+  "replicate": 7,
+  "source_ref": "research/remote-replication",
+  "dispatch_succeeded": true,
+  "onion_hostname_sha256": "1b528738bd799fbba6be631b0397739e2e1a19458cf04c0f1b9a043d4c9bab8a",
+  "tor_version": "Tor version 0.4.9.11.",
+  "ready_requests": 6,
+  "clients": [
+    {
+      "target_os": "linux",
+      "scenario": "absent",
+      "landing_requests": 1,
+      "target_requests": 0,
+      "finish_received": true
+    },
+    {
+      "target_os": "linux",
+      "scenario": "link_only",
+      "landing_requests": 1,
+      "target_requests": 0,
+      "finish_received": true
+    },
+    {
+      "target_os": "linux",
+      "scenario": "clicked",
+      "landing_requests": 1,
+      "target_requests": 1,
+      "finish_received": true
+    },
+    {
+      "target_os": "windows",
+      "scenario": "absent",
+      "landing_requests": 1,
+      "target_requests": 0,
+      "finish_received": true
+    },
+    {
+      "target_os": "windows",
+      "scenario": "link_only",
+      "landing_requests": 1,
+      "target_requests": 0,
+      "finish_received": true
+    },
+    {
+      "target_os": "windows",
+      "scenario": "clicked",
+      "landing_requests": 1,
+      "target_requests": 1,
+      "finish_received": true
+    }
+  ]
+}

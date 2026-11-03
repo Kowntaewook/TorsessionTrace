@@ -1,0 +1,71 @@
+# Separate-host replication: final locked-matrix results
+
+**Status: 60/60 planned analyzable images, ten per OS × condition cell.** All ten replicates are complete under the [pre-capture locked protocol](remote-replication-protocol.md). The selected images have 60 distinct image SHA-256 values and 60 distinct target hashes; all passed the prespecified technical criteria, including captured browser and client Tor PIDs. Selection used the first technically eligible image by service-run ID, regardless of whether the URL was found. Replicate 1 used source revision [`c0a8927`](https://github.com/Kowntaewook/TorsessionTrace/commit/c0a8927aa3948c459e4f0c266b0229e4258b1614). Its [service run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41561713585) and [six-client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41561768611) both completed successfully without replacement.
+
+The independent service recorded one landing request in every condition, **zero** target requests for both OSs in `absent` and `link_only`, and **one** target request for both OSs in `clicked`. All six clients reported the same counter and hashed onion hostname as the service. Every recorded browser PID and the client Tor PID were present in the captured image. All six service completion notifications arrived.
+
+| Client OS | Condition | Service target requests | Adapter target hits | Target-blind YARA target hits | Adapter / YARA scan seconds |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Linux | absent | 0 | 0 | 0 | 131.217 / 30.607 |
+| Linux | link only | 0 | 13 | 13 | 121.740 / 28.527 |
+| Linux | clicked | 1 | 50 | 66 | 128.628 / 29.550 |
+| Windows | absent | 0 | 0 | 0 | 116.866 / 70.585 |
+| Windows | link only | 0 | 15 | 15 | 69.038 / 47.333 |
+| Windows | clicked | 1 | 58 | 87 | 155.875 / 76.805 |
+
+The image-level target presence decision agreed between methods in **6/6** replicate-1 images. The unclicked-link condition again demonstrates an `E1:process_memory_string` target hit without a service-observed request. It does not establish a visit, a generic false-positive rate, or a speed advantage: adapter and YARA scans run sequentially with different implementations and cache conditions. Linux images were about 7.09–7.10 GiB; Windows images were 11.00 GiB. The target-blind YARA rule contains no run-specific URL. Its generic candidate hits are scored against the target only after scanning.
+
+## Replicate 2 and technical replacement
+
+The [second service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41562876333) and [client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41562921012) used source `db31657` (only summary-code/test changes since the acquisition revision). Five images passed. The first Windows `link_only` image contained 14 adapter target hits with zero service requests, but its live-recorded client Tor daemon PID **was absent from Volatility `pslist`**. The validator marked it `protocol_pass: false` and the job failed; this image is excluded for a technical criterion fixed before capture, not for its detection result. Its JSON and failed `attempt.json` remain published.
+
+The [replacement service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41564036102) and [client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41564093360) used revision `923e742`. A fresh Windows `link_only` image had the client Tor PID in RAM, zero service target requests, and 14 adapter hits. It completes the sixth planned cell for replicate 2. The other five successful images from that replacement run are released in `extras/`, and the preselected first eligible images from the original second dispatch remain the selected units.
+
+Across the **12 selected images**, both methods agree on image-level target presence in 12/12: each OS has 0/2 detections in `absent`, 2/2 in `link_only` with zero target requests, and 2/2 in `clicked` with positive target requests. The median adapter / YARA scan times over the two selected captures per cell are 131.196 / 30.156 s (Linux absent), 124.172 / 28.563 s (Linux link), 98.596 / 23.788 s (Linux clicked), 121.950 / 73.804 s (Windows absent), 79.108 / 54.019 s (Windows link), and 136.989 / 76.698 s (Windows clicked). These are descriptive sequential timings. A 2/2 detection cell still has a wide Wilson 95% interval of 0.3424–1.0000.
+
+## Replicate 3
+
+The [third service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41565273311) and [six-client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41565320836) completed successfully on revision `923e742`. All six images passed the locked protocol, with the browser and client Tor PIDs found in their RAM images. The service recorded zero target requests for `absent` and `link_only`, and one for `clicked`, for both client operating systems. Adapter target hits were Linux 0/10/40 and Windows 0/14/41 across the three conditions; target-blind YARA agreed on target presence in all six images. This yields 0/3 `absent`, 3/3 `link_only`, and 3/3 `clicked` image-level detections per OS. The 3/3 Wilson 95% interval remains wide at 0.4385–1.0000.
+
+## Replicate 4
+
+The [fourth service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41566715751) and [six-client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41566763043) completed successfully on revision `976fc24`. All six images passed the locked technical criteria. The independent service again recorded zero target requests for `absent` and `link_only`, and one for `clicked`, in each OS. Adapter target hits were Linux 0/4/41 and Windows 0/12/43 across `absent`/`link_only`/`clicked`. Both methods agreed on image-level target presence in all six images. Across four selected images per cell, both OSs have 0/4 `absent`, 4/4 `link_only`, and 4/4 `clicked` detections; the 4/4 Wilson 95% interval is still 0.5101–1.0000.
+
+## Replicate 5
+
+The [fifth service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41567808325) and [six-client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41567856935) completed successfully on revision `f53d4e4`. All six images passed the locked technical criteria. The service recorded zero target requests for `absent` and `link_only` and one for `clicked` in each OS. Adapter target hits were Linux 0/5/58 and Windows 0/14/41 across `absent`/`link_only`/`clicked`. Both methods agreed on image-level target presence in all six images. Across five selected images per cell, both OSs have 0/5 `absent`, 5/5 `link_only`, and 5/5 `clicked` detections.
+
+## Replicate 6
+
+The [sixth service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41569311146) and [six-client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41569407744) completed successfully on revision `2185843`. All six images passed the locked technical criteria. The independent service recorded zero target requests for `absent` and `link_only` and one for `clicked` in each OS. Adapter target hits were Linux 0/3/39 and Windows 0/17/31 across `absent`/`link_only`/`clicked`. Both methods agreed on image-level target presence in all six images. Across six selected images per cell, both OSs have 0/6 `absent`, 6/6 `link_only`, and 6/6 `clicked` detections.
+
+## Replicate 7 and two technical replacements
+
+The [initial service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41570823405) and [client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41570864238) produced four eligible images. Linux `link_only` and `clicked` failed after capture because the recorded browser PIDs were absent from whole-RAM Volatility `pslist` (no Firefox candidates); their attempt JSON and job logs remain available. The first [replacement service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41572092476) and [client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41572140978) supplied an eligible Linux `link_only` image (14 adapter target hits and zero service target requests). Its Linux `absent` job failed before capture because readiness/landing was not observed, and Linux `clicked` again failed the browser-PID check. The other three eligible replacement images are retained as surplus.
+
+The [second and final allowed replacement service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41573321039) and [client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41573364273) passed in all six jobs. Its Linux `clicked` image had 31 adapter target hits and one service-observed target request, completing replicate 7. The five other eligible images are retained as surplus. Selection kept the first eligible image by increasing service-run ID for every cell; no detection outcome determined eligibility. Across seven selected images per cell, both OSs have 0/7 `absent`, 7/7 `link_only`, and 7/7 `clicked` detections, with image-level target-presence agreement between adapter and target-blind YARA in 42/42 selected images.
+
+## Replicate 8
+
+The [eighth service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41574394022) and [six-client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41574449557) completed successfully on revision `8593c5a`. All six images passed the locked technical criteria. The service again recorded zero target requests for `absent` and `link_only` and one for `clicked` in each OS. Adapter target hits were Linux 0/14/20 and Windows 0/14/55 across `absent`/`link_only`/`clicked`. Both methods agreed on image-level target presence in all six images. Across eight selected images per cell, both OSs have 0/8 `absent`, 8/8 `link_only`, and 8/8 `clicked` detections.
+
+## Replicate 9
+
+The [ninth service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41575480190) and [six-client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41575528910) completed successfully on revision `2d474eb`. All six images passed the locked technical criteria. The service recorded zero target requests for `absent` and `link_only` and one for `clicked` in each OS. Adapter target hits were Linux 0/15/42 and Windows 0/14/17 across `absent`/`link_only`/`clicked`. Both methods agreed on image-level target presence in all six images. Across nine selected images per cell, both OSs have 0/9 `absent`, 9/9 `link_only`, and 9/9 `clicked` detections.
+
+## Replicate 10 and locked-matrix aggregate
+
+The [tenth service](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41576886321) and [six-client run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41576934831) completed successfully on revision `0313eab`. All six images passed technical validation. Adapter target hits were Linux 0/15/40 and Windows 0/16/41 across `absent`/`link_only`/`clicked`; target-blind YARA agreed on image-level presence in all six. The independent service recorded zero target requests in `absent` and `link_only` and one in `clicked` for each OS.
+
+| Client OS | Condition | Adapter target present | Target-blind YARA present | Images with service target request | Wilson 95% interval for adapter presence | Median adapter / YARA scan time |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Linux | absent | 0/10 | 0/10 | 0/10 | 0.0000–0.2775 | 110.725 / 27.265 s |
+| Linux | unclicked link | 10/10 | 10/10 | 0/10 | 0.7225–1.0000 | 105.954 / 25.686 s |
+| Linux | clicked | 10/10 | 10/10 | 10/10 | 0.7225–1.0000 | 93.516 / 24.085 s |
+| Windows | absent | 0/10 | 0/10 | 0/10 | 0.0000–0.2775 | 114.670 / 73.655 s |
+| Windows | unclicked link | 10/10 | 10/10 | 0/10 | 0.7225–1.0000 | 115.017 / 70.150 s |
+| Windows | clicked | 10/10 | 10/10 | 10/10 | 0.7225–1.0000 | 119.695 / 71.153 s |
+
+Thus, **20/20 unclicked-link images** contained the exact target URL with **zero service-observed target requests**. Both scanners agreed on binary target presence in **60/60** images; all 20 absent controls had no target hit or target request, and all 20 clicked images had a target hit and one recorded target request. The separate service counter supports a request claim for the controlled clicked condition, not a claim that a particular memory copy proves a visit. The confidence intervals describe only technically analyzable images from these runner configurations; they do not estimate population error rates. Sequential scans, different implementations, and cache effects make the timing medians descriptive rather than a speed comparison.
+
+The [aggregate](../research-results/2026-11-03-remote-replication/aggregate.json) and [per-image/attempt/service records](../research-results/2026-11-03-remote-replication/) preserve hashes, PID coverage, request counts, timing, **five technically failed client attempts** (one with a retained but protocol-failing result), and **13 surplus analyzable captures**. There were **78 client jobs over 13 service dispatches**; all 60 planned cells are filled. Replicate 2 used one replacement dispatch and replicate 7 used the maximum two allowed replacements. Four failed jobs produced attempt records but no result JSON. The JSON copies were recovered from the Actions job logs, which print the same JSON after writing the uploaded artifact files; GitHub Actions retains the original metric artifacts. Raw RAM, service keys, target URLs, and extracted strings were not uploaded. A new acquisition can be reproduced, but the identical images cannot be reanalyzed from this release.

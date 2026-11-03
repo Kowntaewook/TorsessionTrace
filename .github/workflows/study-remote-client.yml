@@ -15,6 +15,10 @@ on:
         description: Service workflow run ID for cross-run provenance
         required: true
         type: string
+      replicate:
+        description: Preregistered replicate number (1–10)
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -26,11 +30,12 @@ jobs:
       ONION_HOSTNAME: ${{ inputs.onion_hostname }}
       REMOTE_TOKEN: ${{ inputs.token }}
       SERVICE_RUN_ID: ${{ inputs.service_run_id }}
+      STUDY_REPLICATE: ${{ inputs.replicate }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        scenario: [link_only, clicked]
+        scenario: [absent, link_only, clicked]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -85,19 +90,26 @@ jobs:
           schema.write_text(source.replace(old, '"pattern": "^(btf|symdb|dwarf|symtab|system-map)$"'))
           PY
       - name: Capture Tor Browser using a service on another runner
+        id: capture
         run: |
           BROWSER=$(find "$PWD/tor-browser" -type f -name firefox | head -1)
           test -n "$BROWSER"
-          python benchmarks/study_remote_client.py --hostname "$ONION_HOSTNAME" --token "$REMOTE_TOKEN" --service-run-id "$SERVICE_RUN_ID" --target-os linux --scenario '${{ matrix.scenario }}' --browser "$BROWSER" --driver "$PWD/geckodriver" --tor-binary /usr/bin/tor --capture-tool "$PWD/avml" --image "$PWD/whole-ram.lime" --control "$PWD/control.json"
+          python benchmarks/study_remote_client.py --hostname "$ONION_HOSTNAME" --token "$REMOTE_TOKEN" --service-run-id "$SERVICE_RUN_ID" --target-os linux --scenario '${{ matrix.scenario }}' --replicate "$STUDY_REPLICATE" --browser "$BROWSER" --driver "$PWD/geckodriver" --tor-binary /usr/bin/tor --capture-tool "$PWD/avml" --image "$PWD/whole-ram.lime" --control "$PWD/control.json"
           sudo chown "$USER" whole-ram.lime
       - name: Measure remote-onion URL recovery and blind baseline
+        id: analysis
         run: python benchmarks/study_remote_validate.py --target linux --image whole-ram.lime --symbols symbols --control control.json --output study-result.json
+      - name: Record client job outcome
+        if: always()
+        run: python benchmarks/study_remote_attempt.py --target-os linux --scenario '${{ matrix.scenario }}' --replicate "$STUDY_REPLICATE" --capture-outcome '${{ steps.capture.outcome }}' --analysis-outcome '${{ steps.analysis.outcome }}' --output attempt.json
       - name: Upload aggregate metrics only
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: remote-linux-${{ matrix.scenario }}
-          path: study-result.json
+          path: |
+            study-result.json
+            attempt.json
           if-no-files-found: ignore
       - name: Remove local RAM capture
         if: always()
@@ -108,11 +120,12 @@ jobs:
       ONION_HOSTNAME: ${{ inputs.onion_hostname }}
       REMOTE_TOKEN: ${{ inputs.token }}
       SERVICE_RUN_ID: ${{ inputs.service_run_id }}
+      STUDY_REPLICATE: ${{ inputs.replicate }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        scenario: [link_only, clicked]
+        scenario: [absent, link_only, clicked]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -143,6 +156,7 @@ jobs:
           $sig = Get-AuthenticodeSignature .\winpmem.exe
           Write-Host "WinPmem Authenticode: $($sig.Status)"
       - name: Capture Tor Browser using a service on another runner
+        id: capture
         shell: pwsh
         run: |
           & 'C:\Program Files\7-Zip\7z.exe' x -y tor-browser-portable.exe '-otor-browser-extracted' | Out-Null
@@ -151,15 +165,21 @@ jobs:
           if (-not $browser) { throw 'No Tor Browser firefox.exe found' }
           $tor = Get-ChildItem tor-browser-extracted -Recurse -Filter tor.exe | Select-Object -First 1 -ExpandProperty FullName
           if (-not $tor) { throw 'No bundled Tor daemon found' }
-          python benchmarks/study_remote_client.py --hostname "$env:ONION_HOSTNAME" --token "$env:REMOTE_TOKEN" --service-run-id "$env:SERVICE_RUN_ID" --target-os windows --scenario '${{ matrix.scenario }}' --browser "$browser" --driver "$PWD/geckodriver.exe" --tor-binary "$tor" --capture-tool "$PWD/winpmem.exe" --image "$PWD/whole-ram.raw" --control "$PWD/control.json"
+          python benchmarks/study_remote_client.py --hostname "$env:ONION_HOSTNAME" --token "$env:REMOTE_TOKEN" --service-run-id "$env:SERVICE_RUN_ID" --target-os windows --scenario '${{ matrix.scenario }}' --replicate "$env:STUDY_REPLICATE" --browser "$browser" --driver "$PWD/geckodriver.exe" --tor-binary "$tor" --capture-tool "$PWD/winpmem.exe" --image "$PWD/whole-ram.raw" --control "$PWD/control.json"
       - name: Measure remote-onion URL recovery and blind baseline
+        id: analysis
         run: python benchmarks/study_remote_validate.py --target windows --image whole-ram.raw --control control.json --output study-result.json
+      - name: Record client job outcome
+        if: always()
+        run: python benchmarks/study_remote_attempt.py --target-os windows --scenario '${{ matrix.scenario }}' --replicate "$env:STUDY_REPLICATE" --capture-outcome '${{ steps.capture.outcome }}' --analysis-outcome '${{ steps.analysis.outcome }}' --output attempt.json
       - name: Upload aggregate metrics only
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: remote-windows-${{ matrix.scenario }}
-          path: study-result.json
+          path: |
+            study-result.json
+            attempt.json
           if-no-files-found: ignore
       - name: Remove local RAM capture
         if: always()

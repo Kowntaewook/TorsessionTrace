@@ -38,7 +38,8 @@ def main():
     parser.add_argument("--token", required=True)
     parser.add_argument("--service-run-id", required=True)
     parser.add_argument("--target-os", choices=("linux", "windows"), required=True)
-    parser.add_argument("--scenario", choices=("link_only", "clicked"), required=True)
+    parser.add_argument("--scenario", choices=("absent", "link_only", "clicked"), required=True)
+    parser.add_argument("--replicate", type=int, default=1)
     parser.add_argument("--browser", type=Path, required=True)
     parser.add_argument("--driver", type=Path, required=True)
     parser.add_argument("--tor-binary", type=Path, required=True)
@@ -46,6 +47,8 @@ def main():
     parser.add_argument("--image", type=Path, required=True)
     parser.add_argument("--control", type=Path, required=True)
     args = parser.parse_args()
+    if not 1 <= args.replicate <= 10:
+        parser.error("replicate must be from 1 to 10")
     if len(args.hostname.split(".")[0]) != 56 or not args.hostname.endswith(".onion"):
         parser.error("hostname must be a v3 onion hostname")
     if len(args.token) != 32 or any(c not in "0123456789abcdef" for c in args.token):
@@ -104,13 +107,13 @@ def main():
                         source = driver.page_source
                     except Exception:
                         source = ""
-                if target in source:
+                if (target in source) == (args.scenario != "absent"):
                     break
                 time.sleep(3)
             else:
                 raise RuntimeError("Tor Browser could not load remote onion landing page in three attempts")
-            if target not in driver.page_source:
-                raise RuntimeError("Remote onion target link missing from browser page")
+            if (target in driver.page_source) != (args.scenario != "absent"):
+                raise RuntimeError("Remote onion target exposure disagrees with scenario")
             click_attempts = 0
             if args.scenario == "clicked":
                 for click_attempts in range(1, 4):
@@ -162,7 +165,10 @@ def main():
             control = {
                 "transport": "remote_tor_v3_onion",
                 "scenario": args.scenario,
-                "replicate": 1,
+                "replicate": args.replicate,
+                "presentation": ("neutral_page" if args.scenario == "absent" else
+                                 "clicked_link" if args.scenario == "clicked" else
+                                 "unclicked_link"),
                 "target_url": target,
                 "absent_control_url": absent,
                 "target_http_requests": status["target_requests"],

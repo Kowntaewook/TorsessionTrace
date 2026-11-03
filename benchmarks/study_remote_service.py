@@ -18,7 +18,7 @@ from tor_onion_probe import log_has_bootstrap, start_tor
 
 CLIENTS = tuple((target_os, scenario)
                 for target_os in ("linux", "windows")
-                for scenario in ("link_only", "clicked"))
+                for scenario in ("absent", "link_only", "clicked"))
 
 
 def handler_for(state):
@@ -38,8 +38,10 @@ def handler_for(state):
                         state["landing_requests"][key] += 1
                     target = (f"http://{state['hostname']}/target/{state['token']}/"
                               f"{key[0]}/{key[1]}")
-                    body = (f"<html><body><a id='target' href='{target}'>"
-                            "Target link</a></body></html>").encode()
+                    body = (b"<html><body>Neutral control page</body></html>"
+                            if key[1] == "absent" else
+                            (f"<html><body><a id='target' href='{target}'>"
+                             "Target link</a></body></html>").encode())
             elif len(parts) == 4 and parts[1] == state["token"]:
                 key = tuple(parts[2:])
                 if key in CLIENTS:
@@ -78,9 +80,10 @@ def handler_for(state):
 def dispatch_client(hostname, token):
     repository = os.environ["GITHUB_REPOSITORY"]
     api = f"https://api.github.com/repos/{repository}/actions/workflows/study-remote-client.yml/dispatches"
-    payload = json.dumps({"ref": "main", "inputs": {
+    payload = json.dumps({"ref": os.environ.get("GITHUB_REF_NAME", "main"), "inputs": {
         "onion_hostname": hostname, "token": token,
         "service_run_id": os.environ["GITHUB_RUN_ID"],
+        "replicate": os.environ.get("STUDY_REPLICATE", "1"),
     }}).encode()
     request = Request(api, payload, headers={
         "Authorization": "Bearer " + os.environ["GITHUB_TOKEN"],
@@ -89,7 +92,7 @@ def dispatch_client(hostname, token):
         "Content-Type": "application/json",
     }, method="POST")
     with urlopen(request, timeout=30) as response:
-        if response.status != 204:
+        if response.status not in (200, 204):
             raise RuntimeError(f"Client workflow dispatch returned {response.status}")
 
 
@@ -98,7 +101,11 @@ def main():
     parser.add_argument("--tor-binary", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--timeout-seconds", type=int, default=3600)
+    parser.add_argument("--replicate", type=int, default=1)
     args = parser.parse_args()
+    if not 1 <= args.replicate <= 10:
+        parser.error("replicate must be from 1 to 10")
+    os.environ["STUDY_REPLICATE"] = str(args.replicate)
     state = {
         "hostname": None, "token": uuid.uuid4().hex, "lock": threading.Lock(),
         "ready_requests": 0,
@@ -150,6 +157,8 @@ def main():
                 "schema_version": 1,
                 "service_host": "separate GitHub-hosted Ubuntu runner",
                 "service_run_id": os.environ.get("GITHUB_RUN_ID"),
+                "replicate": args.replicate,
+                "source_ref": os.environ.get("GITHUB_REF_NAME"),
                 "dispatch_succeeded": dispatched,
                 "onion_hostname_sha256": (hashlib.sha256(state["hostname"].encode()).hexdigest()
                                           if state["hostname"] else None),
