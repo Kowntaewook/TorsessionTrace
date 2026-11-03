@@ -59,6 +59,7 @@ def main():
     parser.add_argument("--control", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    args.baseline_yara = False
     control = json.loads(args.control.read_text(encoding="utf-8"))
     if control.get("transport") != "real_tor_v3_onion":
         raise RuntimeError("Fixture did not declare real Tor v3 onion transport")
