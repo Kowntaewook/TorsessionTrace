@@ -111,10 +111,32 @@ def main():
                 raise RuntimeError("Tor Browser could not load remote onion landing page in three attempts")
             if target not in driver.page_source:
                 raise RuntimeError("Remote onion target link missing from browser page")
+            click_attempts = 0
             if args.scenario == "clicked":
-                driver.find_element(By.ID, "target").click()
-                if driver.current_url != target:
-                    raise RuntimeError("Tor Browser did not navigate to remote onion target")
+                for click_attempts in range(1, 4):
+                    try:
+                        driver.find_element(By.ID, "target").click()
+                    except Exception:
+                        pass
+                    time.sleep(3)
+                    try:
+                        status = json.loads(get_onion(hostname, status_path))
+                    except Exception:
+                        status = {"target_requests": 0}
+                    if status["target_requests"] > 0:
+                        break
+                    try:
+                        driver.get(f"{base}/landing/{args.target_os}/{args.scenario}")
+                    except Exception:
+                        pass
+                    try:
+                        source = driver.page_source
+                    except Exception:
+                        source = ""
+                    if target not in source:
+                        raise RuntimeError("Remote onion link missing during click retry")
+                else:
+                    raise RuntimeError("Tor Browser click produced no remote target request in three attempts")
             time.sleep(2)
             pids_before = browser_pids(browser)
             if not pids_before:
@@ -148,6 +170,8 @@ def main():
                 "onion_readiness_requests": status["ready_requests"],
                 "onion_readiness_curl_attempts": ready_attempts,
                 "browser_landing_attempts": landing_attempts,
+                "browser_click_attempts": click_attempts,
+                "browser_current_url_matches_target": driver.current_url == target,
                 "onion_hostname_sha256": hashlib.sha256(hostname.encode()).hexdigest(),
                 "tor_version": subprocess.check_output(
                     [str(tor_binary), "--version"], text=True,

@@ -59,6 +59,8 @@ def main():
         "service_landing_requests": control["onion_landing_requests"],
         "onion_readiness_curl_attempts": control["onion_readiness_curl_attempts"],
         "browser_landing_attempts": control.get("browser_landing_attempts", 1),
+        "browser_click_attempts": control.get("browser_click_attempts", 0),
+        "browser_current_url_matches_target": control.get("browser_current_url_matches_target"),
     }
     result["protocol_pass"] = not result["protocol_failures"]
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
