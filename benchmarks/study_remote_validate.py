@@ -26,6 +26,8 @@ def main():
     control = json.loads(args.control.read_text(encoding="utf-8"))
     if control.get("transport") != "remote_tor_v3_onion":
         raise RuntimeError("Fixture did not declare a remote Tor v3 onion service")
+    if control.get("scenario") not in ("absent", "link_only", "clicked"):
+        raise RuntimeError("Unknown remote-host scenario")
     target = control["target_url"]
     if not ONION_HOST.fullmatch(urlsplit(target).hostname or ""):
         raise RuntimeError("Target URL has no v3 onion hostname")
@@ -50,6 +52,7 @@ def main():
     result["schema_version"] = 2
     result["transport"] = "remote_tor_v3_onion"
     result["service_run_id"] = control["service_run_id"]
+    result["presentation"] = control.get("presentation")
     result["tor_network"] = {
         "onion_hostname_sha256": control["onion_hostname_sha256"],
         "client_tor_version": control["tor_version"],
