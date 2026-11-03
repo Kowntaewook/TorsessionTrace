@@ -1,6 +1,6 @@
 # Paper plan: what TorSessionTrace can actually support
 
-Status: **research plan, not a submission-ready manuscript**. Evidence includes the pre-results [localhost](research-protocol.md), [same-host onion](onion-study-protocol.md), [extended onion](extended-study-protocol.md), and [separate-host pilot](remote-host-protocol.md) protocols, their linked results, and the study workflows. The first two strata each contain 18 analyzable images from 21 attempts; the extended stratum contains 30 from 44 actual jobs. The separate-host pilot has one selected analyzable image per OS × scenario cell, so it tests feasibility rather than a detection rate.
+Status: **research plan, not a submission-ready manuscript**. Evidence includes the pre-results [localhost](research-protocol.md), [same-host onion](onion-study-protocol.md), [extended onion](extended-study-protocol.md), and [separate-host pilot](remote-host-protocol.md) protocols, their linked results, and the study workflows. The first two strata each contain 18 analyzable images from 21 attempts; the extended stratum contains 30 from 44 actual jobs. The separate-host pilot has one selected analyzable image per OS × scenario cell, so it tests feasibility rather than a detection rate. The new [separate-host replication protocol](remote-replication-protocol.md) locks a fresh six-cell, 10-per-cell (60-image) target and technical-failure rules before its first capture; older pilot images do not enter that denominator.
 
 ## Candidate claim
 
@@ -27,7 +27,7 @@ This is a **measurement and evidentiary-boundary** contribution. In the two orig
 ## Necessary work before a full research paper
 
 - Increase independent captures across browser versions, OS versions, host sizes, realistic browsing conditions, and capture intervals. Three-per-cell matrices and a one-per-cell remote pilot demonstrate feasibility and variability, not a population error rate.
-- Replicate the separate-host onion pilot with multiple images per cell and preserve independent request evidence under a fixed acquisition protocol. Resolve client-to-service completion failures and intermittent browser navigation before drawing rates.
+- Complete the [locked separate-host replication](remote-replication-protocol.md), including the absent control and 10 independent analyzable images per OS × condition. Preserve independent request evidence, all failed jobs, and any post-start amendments. The matrix yields descriptive fractions and Wilson intervals, not population error rates.
 - Include still-untested nonvisit sources and states such as bookmark-only, clipboard-only, browser shutdown, and long delay. Change one factor at a time.
 - Extend the **target-blind** comparison beyond a generic v3-onion regex to broader URL discovery, with a frozen scoring protocol and the same PID/image unit. The current 30-image baseline establishes binary agreement on this URL class, not superiority of either scanner.
 - If claiming visit reconstruction, add and validate independent structural or network evidence that links the specific URL to a request and time window. Do not assume `SessionHistory`, `Document`, or `STREAM` objects are recoverable.
