@@ -1,0 +1,501 @@
+{
+  "schema_version": 1,
+  "expected_replicates": 10,
+  "expected_images": 60,
+  "selected_images": 6,
+  "complete": false,
+  "missing_cells": [
+    [
+      "linux",
+      "absent",
+      2
+    ],
+    [
+      "linux",
+      "absent",
+      3
+    ],
+    [
+      "linux",
+      "absent",
+      4
+    ],
+    [
+      "linux",
+      "absent",
+      5
+    ],
+    [
+      "linux",
+      "absent",
+      6
+    ],
+    [
+      "linux",
+      "absent",
+      7
+    ],
+    [
+      "linux",
+      "absent",
+      8
+    ],
+    [
+      "linux",
+      "absent",
+      9
+    ],
+    [
+      "linux",
+      "absent",
+      10
+    ],
+    [
+      "linux",
+      "clicked",
+      2
+    ],
+    [
+      "linux",
+      "clicked",
+      3
+    ],
+    [
+      "linux",
+      "clicked",
+      4
+    ],
+    [
+      "linux",
+      "clicked",
+      5
+    ],
+    [
+      "linux",
+      "clicked",
+      6
+    ],
+    [
+      "linux",
+      "clicked",
+      7
+    ],
+    [
+      "linux",
+      "clicked",
+      8
+    ],
+    [
+      "linux",
+      "clicked",
+      9
+    ],
+    [
+      "linux",
+      "clicked",
+      10
+    ],
+    [
+      "linux",
+      "link_only",
+      2
+    ],
+    [
+      "linux",
+      "link_only",
+      3
+    ],
+    [
+      "linux",
+      "link_only",
+      4
+    ],
+    [
+      "linux",
+      "link_only",
+      5
+    ],
+    [
+      "linux",
+      "link_only",
+      6
+    ],
+    [
+      "linux",
+      "link_only",
+      7
+    ],
+    [
+      "linux",
+      "link_only",
+      8
+    ],
+    [
+      "linux",
+      "link_only",
+      9
+    ],
+    [
+      "linux",
+      "link_only",
+      10
+    ],
+    [
+      "windows",
+      "absent",
+      2
+    ],
+    [
+      "windows",
+      "absent",
+      3
+    ],
+    [
+      "windows",
+      "absent",
+      4
+    ],
+    [
+      "windows",
+      "absent",
+      5
+    ],
+    [
+      "windows",
+      "absent",
+      6
+    ],
+    [
+      "windows",
+      "absent",
+      7
+    ],
+    [
+      "windows",
+      "absent",
+      8
+    ],
+    [
+      "windows",
+      "absent",
+      9
+    ],
+    [
+      "windows",
+      "absent",
+      10
+    ],
+    [
+      "windows",
+      "clicked",
+      2
+    ],
+    [
+      "windows",
+      "clicked",
+      3
+    ],
+    [
+      "windows",
+      "clicked",
+      4
+    ],
+    [
+      "windows",
+      "clicked",
+      5
+    ],
+    [
+      "windows",
+      "clicked",
+      6
+    ],
+    [
+      "windows",
+      "clicked",
+      7
+    ],
+    [
+      "windows",
+      "clicked",
+      8
+    ],
+    [
+      "windows",
+      "clicked",
+      9
+    ],
+    [
+      "windows",
+      "clicked",
+      10
+    ],
+    [
+      "windows",
+      "link_only",
+      2
+    ],
+    [
+      "windows",
+      "link_only",
+      3
+    ],
+    [
+      "windows",
+      "link_only",
+      4
+    ],
+    [
+      "windows",
+      "link_only",
+      5
+    ],
+    [
+      "windows",
+      "link_only",
+      6
+    ],
+    [
+      "windows",
+      "link_only",
+      7
+    ],
+    [
+      "windows",
+      "link_only",
+      8
+    ],
+    [
+      "windows",
+      "link_only",
+      9
+    ],
+    [
+      "windows",
+      "link_only",
+      10
+    ]
+  ],
+  "attempts": [
+    {
+      "schema_version": 1,
+      "target_os": "linux",
+      "scenario": "absent",
+      "replicate": 1,
+      "service_run_id": "41561713585",
+      "client_run_id": "41561768611",
+      "client_run_attempt": "1",
+      "source_sha": "c0a8927aa3948c459e4f0c266b0229e4258b1614",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "linux",
+      "scenario": "clicked",
+      "replicate": 1,
+      "service_run_id": "41561713585",
+      "client_run_id": "41561768611",
+      "client_run_attempt": "1",
+      "source_sha": "c0a8927aa3948c459e4f0c266b0229e4258b1614",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "linux",
+      "scenario": "link_only",
+      "replicate": 1,
+      "service_run_id": "41561713585",
+      "client_run_id": "41561768611",
+      "client_run_attempt": "1",
+      "source_sha": "c0a8927aa3948c459e4f0c266b0229e4258b1614",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "absent",
+      "replicate": 1,
+      "service_run_id": "41561713585",
+      "client_run_id": "41561768611",
+      "client_run_attempt": "1",
+      "source_sha": "c0a8927aa3948c459e4f0c266b0229e4258b1614",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "clicked",
+      "replicate": 1,
+      "service_run_id": "41561713585",
+      "client_run_id": "41561768611",
+      "client_run_attempt": "1",
+      "source_sha": "c0a8927aa3948c459e4f0c266b0229e4258b1614",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    },
+    {
+      "schema_version": 1,
+      "target_os": "windows",
+      "scenario": "link_only",
+      "replicate": 1,
+      "service_run_id": "41561713585",
+      "client_run_id": "41561768611",
+      "client_run_attempt": "1",
+      "source_sha": "c0a8927aa3948c459e4f0c266b0229e4258b1614",
+      "capture_outcome": "success",
+      "analysis_outcome": "success"
+    }
+  ],
+  "excluded_results": [],
+  "surplus_analyzable": [],
+  "summary": [
+    {
+      "target_os": "linux",
+      "scenario": "absent",
+      "selected_images": 1,
+      "adapter_detected": 0,
+      "adapter_wilson_95": [
+        0.0,
+        0.7935
+      ],
+      "blind_yara_detected": 0,
+      "blind_yara_wilson_95": [
+        0.0,
+        0.7935
+      ],
+      "image_level_agreement": 1,
+      "median_adapter_seconds": 131.217,
+      "median_blind_yara_seconds": 30.607,
+      "service_run_ids": [
+        "41561713585"
+      ],
+      "image_sha256": [
+        "fcad46449ff391d3938634b77cdb8aff84d19f86c91bdfd1d320d52c21a737b0"
+      ]
+    },
+    {
+      "target_os": "linux",
+      "scenario": "link_only",
+      "selected_images": 1,
+      "adapter_detected": 1,
+      "adapter_wilson_95": [
+        0.2065,
+        1.0
+      ],
+      "blind_yara_detected": 1,
+      "blind_yara_wilson_95": [
+        0.2065,
+        1.0
+      ],
+      "image_level_agreement": 1,
+      "median_adapter_seconds": 121.74,
+      "median_blind_yara_seconds": 28.527,
+      "service_run_ids": [
+        "41561713585"
+      ],
+      "image_sha256": [
+        "f0c3c0450363b6bbb63201e539f3981b03051a315f19938c99ba2af532f380b4"
+      ]
+    },
+    {
+      "target_os": "linux",
+      "scenario": "clicked",
+      "selected_images": 1,
+      "adapter_detected": 1,
+      "adapter_wilson_95": [
+        0.2065,
+        1.0
+      ],
+      "blind_yara_detected": 1,
+      "blind_yara_wilson_95": [
+        0.2065,
+        1.0
+      ],
+      "image_level_agreement": 1,
+      "median_adapter_seconds": 128.628,
+      "median_blind_yara_seconds": 29.55,
+      "service_run_ids": [
+        "41561713585"
+      ],
+      "image_sha256": [
+        "ea38056c09b1852ad73f8ee0cf060383ac6cadac962520a9ed50c26bc025beb7"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "absent",
+      "selected_images": 1,
+      "adapter_detected": 0,
+      "adapter_wilson_95": [
+        0.0,
+        0.7935
+      ],
+      "blind_yara_detected": 0,
+      "blind_yara_wilson_95": [
+        0.0,
+        0.7935
+      ],
+      "image_level_agreement": 1,
+      "median_adapter_seconds": 116.866,
+      "median_blind_yara_seconds": 70.585,
+      "service_run_ids": [
+        "41561713585"
+      ],
+      "image_sha256": [
+        "b8811a173acc23276f1a932424898ff722baac019d1f0b84d5a2850eeca7a481"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "link_only",
+      "selected_images": 1,
+      "adapter_detected": 1,
+      "adapter_wilson_95": [
+        0.2065,
+        1.0
+      ],
+      "blind_yara_detected": 1,
+      "blind_yara_wilson_95": [
+        0.2065,
+        1.0
+      ],
+      "image_level_agreement": 1,
+      "median_adapter_seconds": 69.038,
+      "median_blind_yara_seconds": 47.333,
+      "service_run_ids": [
+        "41561713585"
+      ],
+      "image_sha256": [
+        "17959bc11f3b2f11865a66b1847beed33ba1cea77f4a6cb54fb0953dbac030ac"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "clicked",
+      "selected_images": 1,
+      "adapter_detected": 1,
+      "adapter_wilson_95": [
+        0.2065,
+        1.0
+      ],
+      "blind_yara_detected": 1,
+      "blind_yara_wilson_95": [
+        0.2065,
+        1.0
+      ],
+      "image_level_agreement": 1,
+      "median_adapter_seconds": 155.875,
+      "median_blind_yara_seconds": 76.805,
+      "service_run_ids": [
+        "41561713585"
+      ],
+      "image_sha256": [
+        "1acade408ee4b45a8a735e1a303996282ded3d8d669c7077a23072e3be3a8c7f"
+      ]
+    }
+  ]
+}
