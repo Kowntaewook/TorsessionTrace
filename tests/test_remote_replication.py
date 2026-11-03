@@ -4,6 +4,7 @@ import io
 import json
 import os
 import sys
+import tempfile
 import threading
 import unittest
 from pathlib import Path
@@ -11,6 +12,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "benchmarks"))
 import study_remote_service as service  # noqa: E402
+import study_remote_replication_aggregate as aggregate  # noqa: E402
 
 
 class RemoteReplicationTest(unittest.TestCase):
@@ -64,6 +66,45 @@ class RemoteReplicationTest(unittest.TestCase):
         self.assertEqual(payload["ref"], "research/remote-replication")
         self.assertEqual(payload["inputs"]["replicate"], "7")
         self.assertEqual(payload["inputs"]["service_run_id"], "123")
+
+    def test_detection_miss_stays_in_denominator(self):
+        service_row = {
+            "service_run_id": "100", "replicate": 1, "dispatch_succeeded": True,
+            "onion_hostname_sha256": "host-hash",
+            "clients": [{"target_os": "linux", "scenario": "link_only",
+                         "landing_requests": 1, "target_requests": 0}],
+        }
+        client_row = {
+            "service_run_id": "100", "replicate": 1,
+            "target_os": "linux", "scenario": "link_only",
+            "protocol_pass": True, "protocol_failures": [],
+            "browser_pids_missing_from_image": [],
+            "transport": "remote_tor_v3_onion", "schema_version": 2,
+            "tor_network": {"onion_hostname_sha256": "host-hash",
+                            "service_landing_requests": 1},
+            "target_http_requests": 0,
+            "blind_onion_yara_baseline": {"target_in_rule": False,
+                                          "target_detected": False,
+                                          "seconds_total": 2.0},
+            "target_detected_in_browser_memory": False,
+            "image_sha256": "image-hash", "target_sha256": "target-hash",
+            "adapter_seconds_total": 3.0,
+        }
+        with tempfile.TemporaryDirectory() as folder:
+            service_file = Path(folder) / "service.json"
+            client_file = Path(folder) / "client.json"
+            service_file.write_text(json.dumps(service_row))
+            client_file.write_text(json.dumps(client_row))
+            result = aggregate.aggregate([service_file], [client_file], [], 1)
+            self.assertEqual(result["selected_images"], 1)
+            self.assertEqual(result["summary"][1]["adapter_detected"], 0)
+            self.assertFalse(result["complete"])
+            client_row["target_http_requests"] = 1
+            client_file.write_text(json.dumps(client_row))
+            result = aggregate.aggregate([service_file], [client_file], [], 1)
+            self.assertEqual(result["selected_images"], 0)
+            self.assertEqual(result["excluded_results"][0]["reason"],
+                             "service request counter mismatch")
 
 
 if __name__ == "__main__":
