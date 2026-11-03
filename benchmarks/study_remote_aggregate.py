@@ -10,24 +10,30 @@ EXPECTED = {(target_os, scenario)
             for scenario in ("link_only", "clicked")}
 
 
-def aggregate(service_path, client_paths):
-    service = json.loads(Path(service_path).read_text(encoding="utf-8"))
+def aggregate(service_paths, client_paths):
+    services = [json.loads(Path(path).read_text(encoding="utf-8"))
+                for path in service_paths]
     clients = [json.loads(Path(path).read_text(encoding="utf-8")) for path in client_paths]
-    service_cells = {(row["target_os"], row["scenario"]): row
-                     for row in service["clients"]}
+    by_run = {service["service_run_id"]: service for service in services}
     client_cells = {(row["target_os"], row["scenario"]): row for row in clients}
-    if (set(service_cells) != EXPECTED or set(client_cells) != EXPECTED or
-            len(service["clients"]) != 4 or len(clients) != 4):
-        raise ValueError("Remote service/client matrix incomplete or duplicated")
-    if not service["dispatch_succeeded"] or not service["onion_hostname_sha256"]:
-        raise ValueError("Remote service did not dispatch or create onion hostname")
-    if len({row["image_sha256"] for row in clients}) != 4:
-        raise ValueError("Client whole-RAM images are not independent")
+    if len(by_run) != len(services):
+        raise ValueError("Duplicate remote service run IDs")
+    if set(client_cells) != EXPECTED or len(clients) != 4:
+        raise ValueError("Remote client matrix incomplete or duplicated")
+    for field in ("image_sha256", "target_sha256"):
+        if len({row[field] for row in clients}) != 4:
+            raise ValueError(f"Client {field} values are not independent")
     summary = []
     for target_os, scenario in sorted(EXPECTED):
-        host = service_cells[(target_os, scenario)]
         client = client_cells[(target_os, scenario)]
-        if (not host["finish_received"] or not client["protocol_pass"] or
+        service = by_run.get(client["service_run_id"])
+        if not service or not service["dispatch_succeeded"]:
+            raise ValueError(f"Missing dispatched service for {target_os}/{scenario}")
+        host = next((row for row in service["clients"]
+                     if (row["target_os"], row["scenario"]) == (target_os, scenario)), None)
+        if host is None:
+            raise ValueError(f"Service cell missing for {target_os}/{scenario}")
+        if (not client["protocol_pass"] or
                 client["transport"] != "remote_tor_v3_onion" or
                 client["service_run_id"] != service["service_run_id"] or
                 client["tor_network"]["onion_hostname_sha256"] !=
@@ -41,9 +47,12 @@ def aggregate(service_path, client_paths):
         summary.append({
             "target_os": target_os,
             "scenario": scenario,
+            "service_run_id": service["service_run_id"],
+            "onion_hostname_sha256": service["onion_hostname_sha256"],
             "image_sha256": client["image_sha256"],
             "service_target_requests": host["target_requests"],
             "service_landing_requests": host["landing_requests"],
+            "service_finish_received": host["finish_received"],
             "adapter_target_detected": client["target_detected_in_browser_memory"],
             "adapter_target_hits": client["target_hits"],
             "blind_yara_target_detected": client["blind_onion_yara_baseline"]["target_detected"],
@@ -54,21 +63,19 @@ def aggregate(service_path, client_paths):
     return {
         "schema_version": 1,
         "transport": "remote_tor_v3_onion",
-        "service_run_id": service["service_run_id"],
-        "service_host": service["service_host"],
-        "onion_hostname_sha256": service["onion_hostname_sha256"],
-        "service_ready_requests": service["ready_requests"],
+        "service_run_ids": sorted({row["service_run_id"] for row in summary}),
+        "service_host": "separate GitHub-hosted Ubuntu runner",
         "summary": summary,
     }
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--service", type=Path, required=True)
+    parser.add_argument("--services", nargs="+", type=Path, required=True)
     parser.add_argument("--clients", nargs=4, type=Path, required=True)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    result = aggregate(args.service, args.clients)
+    result = aggregate(args.services, args.clients)
     output = json.dumps(result, indent=2) + "\n"
     if args.output:
         args.output.write_text(output, encoding="utf-8")

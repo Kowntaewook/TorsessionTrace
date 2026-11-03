@@ -1,0 +1,139 @@
+{
+  "schema_version": 2,
+  "protocol_pass": true,
+  "protocol_failures": [],
+  "target_os": "windows",
+  "scenario": "clicked",
+  "replicate": 2,
+  "target_present_in_page": true,
+  "target_http_requests": 1,
+  "target_detected_in_browser_memory": true,
+  "target_hits": 39,
+  "absent_control_hits": 0,
+  "target_sha256": "a0225ffd7b1d7ff6b415912b87a8797152aec0b8c01525f21b0b9203a98f48b6",
+  "analysis_host": "Windows-2022Server-10.0.20348-SP0",
+  "image_bytes": 11811160064,
+  "image_sha256": "4c62ac756fe31d8bb9fbe43bd4ef54279754bc3c4bb3a4d381c2ce4aa764c28b",
+  "browser_binary_sha256": "be563401b88e041c8cfdd42bdd594248993a29a19f77c61e850ad5406b61587a",
+  "browser_pids_recorded_live": [
+    7508,
+    5976,
+    4612,
+    2656,
+    1060,
+    8012,
+    4300,
+    1408,
+    7984
+  ],
+  "browser_pids_found_in_image": [
+    7508,
+    5976,
+    4612,
+    2656,
+    1060,
+    8012,
+    4300,
+    1408,
+    7984
+  ],
+  "browser_pids_missing_from_image": [],
+  "pslist_process_count": 157,
+  "pslist_seconds": 71.346,
+  "adapter_seconds_total": 62.14,
+  "exact_target_yara_baseline": null,
+  "scans": [
+    {
+      "pid": 7508,
+      "process": "firefox.exe",
+      "string_hits": 1111,
+      "target_hits": 23,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 5976,
+      "process": "firefox.exe",
+      "string_hits": 72,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 4612,
+      "process": "firefox.exe",
+      "string_hits": 280,
+      "target_hits": 16,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2656,
+      "process": "firefox.exe",
+      "string_hits": 36,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 1060,
+      "process": "firefox.exe",
+      "string_hits": 70,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 8012,
+      "process": "firefox.exe",
+      "string_hits": 637,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 4300,
+      "process": "firefox.exe",
+      "string_hits": 41,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 1408,
+      "process": "firefox.exe",
+      "string_hits": 23,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 7984,
+      "process": "firefox.exe",
+      "string_hits": 40,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    }
+  ],
+  "blind_onion_yara_baseline": {
+    "method": "Volatility process-scoped YARA generic v3 onion URL regex, ascii and wide",
+    "rule": "/https?:\\/\\/[a-z2-7]{56}\\.onion\\/[a-z0-9\\/._?=&%-]{1,128}/",
+    "target_in_rule": false,
+    "candidate_string_hits": 138,
+    "unique_candidate_strings": 6,
+    "target_string_hits": 53,
+    "target_detected": true,
+    "seconds_total": 44.042
+  },
+  "transport": "real_tor_v3_onion",
+  "presentation": "clicked",
+  "tor_network": {
+    "onion_hostname_sha256": "d26eb5a8af5cbc364b65b5f38834f636dff8334f1d11d929d9d13724ea7afb0a",
+    "tor_version": "Tor version 0.4.9.15 (git-4d8efff53a86670b).",
+    "separate_tor_processes_recorded_live": [
+      7424,
+      1968
+    ],
+    "tor_processes_found_in_image": [
+      7424,
+      1968
+    ],
+    "onion_readiness_requests": 1,
+    "onion_landing_requests": 1,
+    "onion_readiness_curl_attempts": 7,
+    "browser_landing_attempts": 1,
+    "neutral_requests": 0
+  }
+}

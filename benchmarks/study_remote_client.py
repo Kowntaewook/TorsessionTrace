@@ -190,10 +190,18 @@ def main():
             if driver is not None:
                 driver.quit()
             if route_ready:
-                try:
-                    get_onion(hostname, finish_path)
-                except Exception as exc:
-                    print(f"Could not notify remote service of completion: {exc}", flush=True)
+                for finish_attempt in range(1, 4):
+                    try:
+                        get_onion(hostname, finish_path)
+                        print(f"Remote service completion acknowledged on attempt {finish_attempt}",
+                              flush=True)
+                        break
+                    except Exception as exc:
+                        if finish_attempt == 3:
+                            print(f"Could not notify remote service of completion after "
+                                  f"{finish_attempt} attempts: {exc}", flush=True)
+                        else:
+                            time.sleep(3)
             if client is not None and client.poll() is None:
                 client.terminate()
                 try:

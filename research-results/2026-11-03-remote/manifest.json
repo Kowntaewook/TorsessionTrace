@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "selection_rule": "Earliest analyzable client capture per OS/scenario cell; successful later captures retained as extra attempts, not added to the one-per-cell pilot denominator. Service/client counters are cross-checked by service run ID and onion-hostname hash.",
+  "total_client_job_attempts": 16,
+  "selected_client_images": 4,
+  "additional_analyzable_client_jobs": 5,
+  "technical_client_failures": 7,
+  "service_runs": [
+    41550300161,
+    41550538294,
+    41551406883,
+    41552523820
+  ],
+  "selected": [
+    {
+      "target_os": "linux",
+      "scenario": "link_only",
+      "client_run_id": 41550598132,
+      "client_job_id": 125637123322,
+      "service_run_id": 41550538294,
+      "result_file": "linux-link_only-1.json",
+      "image_sha256": "1e934fe33112bf03e2578106c516cefea8c83c14853a4426cbebb4cda93f49f3"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "clicked",
+      "client_run_id": 41550598132,
+      "client_job_id": 125637123246,
+      "service_run_id": 41550538294,
+      "result_file": "linux-clicked-1.json",
+      "image_sha256": "67c56caebfc8710dc300bbdc6eb8e39e540dc588ec873d1f55c6f910a0cef023"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "link_only",
+      "client_run_id": 41550598132,
+      "client_job_id": 125637122921,
+      "service_run_id": 41550538294,
+      "result_file": "windows-link_only-1.json",
+      "image_sha256": "ac88f482d43cdd2b4f69c6c4dc09de18fb057fff46bf41e934f916d6e980ef0d"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "clicked",
+      "client_run_id": 41552571456,
+      "client_job_id": 125643543524,
+      "service_run_id": 41552523820,
+      "result_file": "windows-clicked-1.json",
+      "image_sha256": "e8fb714dda73bb5071315a9e2f29c412bad692e3be9d440b1820df0e4044b5aa"
+    }
+  ],
+  "additional_analyzable_jobs": [
+    {
+      "client_run_id": 41551827714,
+      "client_job_id": 125641047040,
+      "target_os": "windows",
+      "scenario": "link_only"
+    },
+    {
+      "client_run_id": 41551827714,
+      "client_job_id": 125641047242,
+      "target_os": "linux",
+      "scenario": "clicked"
+    },
+    {
+      "client_run_id": 41552571456,
+      "client_job_id": 125643543091,
+      "target_os": "linux",
+      "scenario": "link_only"
+    },
+    {
+      "client_run_id": 41552571456,
+      "client_job_id": 125643543460,
+      "target_os": "windows",
+      "scenario": "link_only"
+    },
+    {
+      "client_run_id": 41552571456,
+      "client_job_id": 125643543664,
+      "target_os": "linux",
+      "scenario": "clicked"
+    }
+  ],
+  "failed_client_jobs": [
+    {
+      "client_run_id": 41550362682,
+      "client_job_id": 125636156839,
+      "target_os": "linux",
+      "scenario": "clicked",
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "client_run_id": 41550362682,
+      "client_job_id": 125636157047,
+      "target_os": "windows",
+      "scenario": "link_only",
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "client_run_id": 41550362682,
+      "client_job_id": 125636157184,
+      "target_os": "linux",
+      "scenario": "link_only",
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "client_run_id": 41550362682,
+      "client_job_id": 125636157234,
+      "target_os": "windows",
+      "scenario": "clicked",
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "client_run_id": 41550598132,
+      "client_job_id": 125637123289,
+      "target_os": "windows",
+      "scenario": "clicked",
+      "reason": "browser_landing_failed"
+    },
+    {
+      "client_run_id": 41551827714,
+      "client_job_id": 125641046758,
+      "target_os": "linux",
+      "scenario": "link_only",
+      "reason": "browser_pids_missing_from_pslist"
+    },
+    {
+      "client_run_id": 41551827714,
+      "client_job_id": 125641047009,
+      "target_os": "windows",
+      "scenario": "clicked",
+      "reason": "target_navigation_failed"
+    }
+  ],
+  "service_completion_note": "Fourth service runner awaited an unacknowledged Windows clicked finish request despite an analyzable client result; its final service-side artifact must be checked before the pilot is counted as cross-verified."
+}

@@ -1,0 +1,147 @@
+{
+  "schema_version": 2,
+  "protocol_pass": true,
+  "protocol_failures": [],
+  "target_os": "linux",
+  "scenario": "clicked",
+  "replicate": 1,
+  "target_present_in_page": true,
+  "target_http_requests": 1,
+  "target_detected_in_browser_memory": true,
+  "target_hits": 40,
+  "absent_control_hits": 0,
+  "target_sha256": "93ff4f7f3ccb0a0793780bf061b44f63ba62ee9f42ffdf19c9fc2e54b85a1172",
+  "analysis_host": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+  "image_bytes": 7611332896,
+  "image_sha256": "bce1f575aa26fc15f396300b22b43da178c2573ce63266601b5fc836e7063f22",
+  "browser_binary_sha256": "cdcd40436a4aef8e3583b1d95fa3b6c18bffe6f26921283e197052c56c8ae593",
+  "browser_pids_recorded_live": [
+    2924,
+    3058,
+    3094,
+    3150,
+    3097,
+    3103,
+    2968,
+    2971,
+    3016,
+    3047
+  ],
+  "browser_pids_found_in_image": [
+    2924,
+    3058,
+    3094,
+    3150,
+    3097,
+    3103,
+    2968,
+    2971,
+    3016,
+    3047
+  ],
+  "browser_pids_missing_from_image": [],
+  "pslist_process_count": 168,
+  "pslist_seconds": 10.409,
+  "adapter_seconds_total": 123.201,
+  "exact_target_yara_baseline": null,
+  "scans": [
+    {
+      "pid": 2924,
+      "process": "firefox.real",
+      "string_hits": 3847,
+      "target_hits": 26,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 3058,
+      "process": "Privileged Cont",
+      "string_hits": 439,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 3094,
+      "process": "Isolated Web Co",
+      "string_hits": 492,
+      "target_hits": 14,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 3150,
+      "process": "Web Content",
+      "string_hits": 252,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 3097,
+      "process": "Web Content",
+      "string_hits": 252,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 3103,
+      "process": "Web Content",
+      "string_hits": 252,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2968,
+      "process": "forkserver",
+      "string_hits": 57,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 2971,
+      "process": "Socket Process",
+      "string_hits": 293,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 3016,
+      "process": "RDD Process",
+      "string_hits": 208,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    },
+    {
+      "pid": 3047,
+      "process": "Utility Process",
+      "string_hits": 200,
+      "target_hits": 0,
+      "absent_control_hits": 0
+    }
+  ],
+  "blind_onion_yara_baseline": {
+    "method": "Volatility process-scoped YARA generic v3 onion URL regex, ascii and wide",
+    "rule": "/https?:\\/\\/[a-z2-7]{56}\\.onion\\/[a-z0-9\\/._?=&%-]{1,128}/",
+    "target_in_rule": false,
+    "candidate_string_hits": 150,
+    "unique_candidate_strings": 18,
+    "target_string_hits": 56,
+    "target_detected": true,
+    "seconds_total": 28.966
+  },
+  "transport": "real_tor_v3_onion",
+  "presentation": "clicked",
+  "tor_network": {
+    "onion_hostname_sha256": "331003584e6adb75160a7fbe76e3ccd8300c23d8b40648cb8fa484b4055c832b",
+    "tor_version": "Tor version 0.4.9.11.",
+    "separate_tor_processes_recorded_live": [
+      2817,
+      2818
+    ],
+    "tor_processes_found_in_image": [
+      2817,
+      2818
+    ],
+    "onion_readiness_requests": 1,
+    "onion_landing_requests": 1,
+    "onion_readiness_curl_attempts": 5,
+    "neutral_requests": 0
+  }
+}

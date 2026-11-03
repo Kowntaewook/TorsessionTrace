@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "service_host": "separate GitHub-hosted Ubuntu runner",
+  "service_run_id": "41550538294",
+  "dispatch_succeeded": true,
+  "onion_hostname_sha256": "ab47ad781e2338642c03c59dc3c37e2bc087be4e84ef5d3315d966e0bd97e679",
+  "tor_version": "Tor version 0.4.9.11.",
+  "ready_requests": 4,
+  "clients": [
+    {
+      "target_os": "linux",
+      "scenario": "link_only",
+      "landing_requests": 1,
+      "target_requests": 0,
+      "finish_received": true
+    },
+    {
+      "target_os": "linux",
+      "scenario": "clicked",
+      "landing_requests": 1,
+      "target_requests": 1,
+      "finish_received": true
+    },
+    {
+      "target_os": "windows",
+      "scenario": "link_only",
+      "landing_requests": 1,
+      "target_requests": 0,
+      "finish_received": true
+    },
+    {
+      "target_os": "windows",
+      "scenario": "clicked",
+      "landing_requests": 0,
+      "target_requests": 0,
+      "finish_received": true
+    }
+  ]
+}

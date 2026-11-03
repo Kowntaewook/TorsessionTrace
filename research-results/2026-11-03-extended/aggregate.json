@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "transport": "real_tor_v3_onion",
+  "expected_replicates": 3,
+  "summary": [
+    {
+      "target_os": "linux",
+      "scenario": "absent",
+      "independent_captures": 3,
+      "target_requested_captures": 0,
+      "adapter_detected_captures": 0,
+      "adapter_wilson_95": [
+        0.0,
+        0.5615
+      ],
+      "blind_yara_detected_captures": 0,
+      "blind_yara_wilson_95": [
+        0.0,
+        0.5615
+      ],
+      "adapter_target_hits": [
+        0,
+        0,
+        0
+      ],
+      "blind_yara_target_hits": [
+        0,
+        0,
+        0
+      ],
+      "median_adapter_seconds": 89.751,
+      "median_blind_yara_seconds": 23.23,
+      "image_sha256": [
+        "3e5d25395323ef0a6fc9cf37e2a14a229a4ff635a855669709bd6be1447f337a",
+        "922d8b697c0ea591055d95f28dec7852dff957b2a66e5c22e75a0a73849a6e04",
+        "766e173ca7f6825cdc75753496f1f8c083ef1f650f524c14b88262bbdc538739"
+      ]
+    },
+    {
+      "target_os": "linux",
+      "scenario": "text_only",
+      "independent_captures": 3,
+      "target_requested_captures": 0,
+      "adapter_detected_captures": 3,
+      "adapter_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "blind_yara_detected_captures": 3,
+      "blind_yara_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "adapter_target_hits": [
+        6,
+        6,
+        20
+      ],
+      "blind_yara_target_hits": [
+        6,
+        6,
+        20
+      ],
+      "median_adapter_seconds": 92.12,
+      "median_blind_yara_seconds": 23.392,
+      "image_sha256": [
+        "301b4b53c66b8727e8c5802c537924793386b910037856cd8798025758dfc81f",
+        "bea1d8b83713bb3721740e391bc9fcb3d444579a126c3c52169a6debb3774baf",
+        "9dc033a38934eb4c0fdba5e29b2a3cd9b5d3cdaa87481aec66e151ca02f67a4e"
+      ]
+    },
+    {
+      "target_os": "linux",
+      "scenario": "input_field",
+      "independent_captures": 3,
+      "target_requested_captures": 0,
+      "adapter_detected_captures": 3,
+      "adapter_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "blind_yara_detected_captures": 3,
+      "blind_yara_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "adapter_target_hits": [
+        15,
+        5,
+        5
+      ],
+      "blind_yara_target_hits": [
+        15,
+        5,
+        5
+      ],
+      "median_adapter_seconds": 67.089,
+      "median_blind_yara_seconds": 17.444,
+      "image_sha256": [
+        "1ce606423a5a97ce65e1997130728a8aabf30dcc80eddd8ecff0a5e3c02b81e1",
+        "0e6ca9e5cd982097e4dac061e3f3403c5a6c89efdea6980f446bd7b8526c3ba3",
+        "a1fa3bf946816b3522f51476027ea91e892d5bf3ca2b84910b8f1acaa91038bc"
+      ]
+    },
+    {
+      "target_os": "linux",
+      "scenario": "background_link",
+      "independent_captures": 3,
+      "target_requested_captures": 0,
+      "adapter_detected_captures": 3,
+      "adapter_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "blind_yara_detected_captures": 3,
+      "blind_yara_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "adapter_target_hits": [
+        3,
+        2,
+        13
+      ],
+      "blind_yara_target_hits": [
+        4,
+        2,
+        13
+      ],
+      "median_adapter_seconds": 143.832,
+      "median_blind_yara_seconds": 31.854,
+      "image_sha256": [
+        "b0ef8f9b897c238e350fbe3004cde8d08ce0e36d298866cacfa728faaf8467ac",
+        "bba2f2c918bf9ff7c3d308c068a936190719301da4b9031231ae8f97f14c3eef",
+        "906a237b15a12870cce130d872dfca7863615fb67b6088cecd5187c1a894e77f"
+      ]
+    },
+    {
+      "target_os": "linux",
+      "scenario": "clicked",
+      "independent_captures": 3,
+      "target_requested_captures": 3,
+      "adapter_detected_captures": 3,
+      "adapter_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "blind_yara_detected_captures": 3,
+      "blind_yara_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "adapter_target_hits": [
+        40,
+        41,
+        37
+      ],
+      "blind_yara_target_hits": [
+        56,
+        55,
+        49
+      ],
+      "median_adapter_seconds": 123.201,
+      "median_blind_yara_seconds": 28.966,
+      "image_sha256": [
+        "bce1f575aa26fc15f396300b22b43da178c2573ce63266601b5fc836e7063f22",
+        "6bf13afc822b610dd14cf97a21d2f3274e22aeb3725d941f5b46b7a084ea0199",
+        "f0863cc9af91697a5c549e10f74cb1deb64e9cb989257729fb71009078fa2ab0"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "absent",
+      "independent_captures": 3,
+      "target_requested_captures": 0,
+      "adapter_detected_captures": 0,
+      "adapter_wilson_95": [
+        0.0,
+        0.5615
+      ],
+      "blind_yara_detected_captures": 0,
+      "blind_yara_wilson_95": [
+        0.0,
+        0.5615
+      ],
+      "adapter_target_hits": [
+        0,
+        0,
+        0
+      ],
+      "blind_yara_target_hits": [
+        0,
+        0,
+        0
+      ],
+      "median_adapter_seconds": 109.778,
+      "median_blind_yara_seconds": 59.248,
+      "image_sha256": [
+        "af316b5d351985381eda4cbe14c01e4fe6a917f92e4e21dcf0b967764dd07fbf",
+        "86bcc84475fd35c940d84522566e164da7f71239027db9ca1390c83c402c0bd3",
+        "d7d5182b915eb72087b3daa2f08830a6aa25562ac94a522aa974e5041956297d"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "text_only",
+      "independent_captures": 3,
+      "target_requested_captures": 0,
+      "adapter_detected_captures": 3,
+      "adapter_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "blind_yara_detected_captures": 3,
+      "blind_yara_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "adapter_target_hits": [
+        17,
+        21,
+        24
+      ],
+      "blind_yara_target_hits": [
+        17,
+        21,
+        24
+      ],
+      "median_adapter_seconds": 113.784,
+      "median_blind_yara_seconds": 69.01,
+      "image_sha256": [
+        "7eb4b8212564b0bbf8895989893c4faf71cdd55a5a4f8283bdc3c1d37620f7b3",
+        "c8303a15c189b79333833f3593548cc1d3218227a481441b1a43078eebb338fc",
+        "c2466981cabaf2f84ea9269cebd1f7bc7c41e46721eb8f55398204e249624661"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "input_field",
+      "independent_captures": 3,
+      "target_requested_captures": 0,
+      "adapter_detected_captures": 3,
+      "adapter_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "blind_yara_detected_captures": 3,
+      "blind_yara_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "adapter_target_hits": [
+        12,
+        7,
+        20
+      ],
+      "blind_yara_target_hits": [
+        14,
+        7,
+        22
+      ],
+      "median_adapter_seconds": 125.963,
+      "median_blind_yara_seconds": 71.357,
+      "image_sha256": [
+        "f2e02ddb72c87c1efe8962ed17458e53e04faf11b6ca1608df519abb61c77ccc",
+        "3df160ed1a6c52836f23cee2a00984ea10c9e0d1089d7c7641047bfc4cea735d",
+        "447a04a7c7f66bc7cf504b5b8bd04ccce91562ab5bb8cd95b3b286b0094eb9fa"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "background_link",
+      "independent_captures": 3,
+      "target_requested_captures": 0,
+      "adapter_detected_captures": 3,
+      "adapter_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "blind_yara_detected_captures": 3,
+      "blind_yara_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "adapter_target_hits": [
+        10,
+        13,
+        3
+      ],
+      "blind_yara_target_hits": [
+        10,
+        13,
+        3
+      ],
+      "median_adapter_seconds": 99.685,
+      "median_blind_yara_seconds": 64.991,
+      "image_sha256": [
+        "c1da52599e60b94e38789fbcc42159a01bad54bade95fba7ec8bd0587cc01997",
+        "8aea3f8989e3c40bba501fca8fcff1734a2be0978ee5c4e2783a47bfe0f1d013",
+        "f18a72fe751c2c63ced6f73c5c9bbe675ea023902923f4679ce5d7639acfcad1"
+      ]
+    },
+    {
+      "target_os": "windows",
+      "scenario": "clicked",
+      "independent_captures": 3,
+      "target_requested_captures": 3,
+      "adapter_detected_captures": 3,
+      "adapter_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "blind_yara_detected_captures": 3,
+      "blind_yara_wilson_95": [
+        0.4385,
+        1.0
+      ],
+      "adapter_target_hits": [
+        54,
+        39,
+        61
+      ],
+      "blind_yara_target_hits": [
+        73,
+        53,
+        94
+      ],
+      "median_adapter_seconds": 116.722,
+      "median_blind_yara_seconds": 69.451,
+      "image_sha256": [
+        "92d68ef4def5abb0cb438502ba986dd059ec8522fe89c5f84756d14ed5dcbb2c",
+        "4c62ac756fe31d8bb9fbe43bd4ef54279754bc3c4bb3a4d381c2ce4aa764c28b",
+        "0b89e442cc064fdf88aeb8e44d894a8294d36c8fc9e667d23870a619c3d1476a"
+      ]
+    }
+  ]
+}

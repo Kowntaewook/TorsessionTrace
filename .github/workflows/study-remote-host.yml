@@ -1,13 +1,6 @@
 name: Remote-host onion study - service runner
 
 on:
-  push:
-    paths:
-      - '.github/workflows/study-remote-host.yml'
-      - '.github/workflows/study-remote-client.yml'
-      - 'benchmarks/study_remote_service.py'
-      - 'benchmarks/study_remote_client.py'
-      - 'benchmarks/study_remote_validate.py'
   workflow_dispatch:
 
 permissions:

@@ -1,0 +1,403 @@
+{
+  "schema_version": 1,
+  "selection_rule": "Earliest analyzable fresh capture for each OS/scenario/replicate; failed jobs do not enter detection denominators. GitHub rerun listings reuse unchanged prior jobs with new display IDs, which are not counted as new acquisitions.",
+  "total_actual_job_attempts": 44,
+  "selected_analyzable_images": 30,
+  "technical_failures": 14,
+  "initial_prerepair_attempts": 10,
+  "postrepair_attempts": 34,
+  "selected": [
+    {
+      "target_os": "linux",
+      "scenario": "absent",
+      "replicate": 1,
+      "run_id": 41550538103,
+      "job_id": 125636722388,
+      "result_file": "linux-absent-1.json",
+      "image_sha256": "3e5d25395323ef0a6fc9cf37e2a14a229a4ff635a855669709bd6be1447f337a"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "absent",
+      "replicate": 2,
+      "run_id": 41551406751,
+      "job_id": 125639620567,
+      "result_file": "linux-absent-2.json",
+      "image_sha256": "922d8b697c0ea591055d95f28dec7852dff957b2a66e5c22e75a0a73849a6e04"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "absent",
+      "replicate": 3,
+      "run_id": 41551406751,
+      "job_id": 125639620529,
+      "result_file": "linux-absent-3.json",
+      "image_sha256": "766e173ca7f6825cdc75753496f1f8c083ef1f650f524c14b88262bbdc538739"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "text_only",
+      "replicate": 1,
+      "run_id": 41550538103,
+      "job_id": 125639889894,
+      "result_file": "linux-text_only-1.json",
+      "image_sha256": "301b4b53c66b8727e8c5802c537924793386b910037856cd8798025758dfc81f"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "text_only",
+      "replicate": 2,
+      "run_id": 41551406751,
+      "job_id": 125639620220,
+      "result_file": "linux-text_only-2.json",
+      "image_sha256": "bea1d8b83713bb3721740e391bc9fcb3d444579a126c3c52169a6debb3774baf"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "text_only",
+      "replicate": 3,
+      "run_id": 41551406751,
+      "job_id": 125639620580,
+      "result_file": "linux-text_only-3.json",
+      "image_sha256": "9dc033a38934eb4c0fdba5e29b2a3cd9b5d3cdaa87481aec66e151ca02f67a4e"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "input_field",
+      "replicate": 1,
+      "run_id": 41550538103,
+      "job_id": 125636722241,
+      "result_file": "linux-input_field-1.json",
+      "image_sha256": "1ce606423a5a97ce65e1997130728a8aabf30dcc80eddd8ecff0a5e3c02b81e1"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "input_field",
+      "replicate": 2,
+      "run_id": 41551406751,
+      "job_id": 125639620601,
+      "result_file": "linux-input_field-2.json",
+      "image_sha256": "0e6ca9e5cd982097e4dac061e3f3403c5a6c89efdea6980f446bd7b8526c3ba3"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "input_field",
+      "replicate": 3,
+      "run_id": 41551406751,
+      "job_id": 125639620587,
+      "result_file": "linux-input_field-3.json",
+      "image_sha256": "a1fa3bf946816b3522f51476027ea91e892d5bf3ca2b84910b8f1acaa91038bc"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "background_link",
+      "replicate": 1,
+      "run_id": 41550538103,
+      "job_id": 125644199486,
+      "result_file": "linux-background_link-1.json",
+      "image_sha256": "b0ef8f9b897c238e350fbe3004cde8d08ce0e36d298866cacfa728faaf8467ac"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "background_link",
+      "replicate": 2,
+      "run_id": 41551406751,
+      "job_id": 125639620571,
+      "result_file": "linux-background_link-2.json",
+      "image_sha256": "bba2f2c918bf9ff7c3d308c068a936190719301da4b9031231ae8f97f14c3eef"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "background_link",
+      "replicate": 3,
+      "run_id": 41551406751,
+      "job_id": 125639620769,
+      "result_file": "linux-background_link-3.json",
+      "image_sha256": "906a237b15a12870cce130d872dfca7863615fb67b6088cecd5187c1a894e77f"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "clicked",
+      "replicate": 1,
+      "run_id": 41550538103,
+      "job_id": 125636722248,
+      "result_file": "linux-clicked-1.json",
+      "image_sha256": "bce1f575aa26fc15f396300b22b43da178c2573ce63266601b5fc836e7063f22"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "clicked",
+      "replicate": 2,
+      "run_id": 41551406751,
+      "job_id": 125639620480,
+      "result_file": "linux-clicked-2.json",
+      "image_sha256": "6bf13afc822b610dd14cf97a21d2f3274e22aeb3725d941f5b46b7a084ea0199"
+    },
+    {
+      "target_os": "linux",
+      "scenario": "clicked",
+      "replicate": 3,
+      "run_id": 41551406751,
+      "job_id": 125644165690,
+      "result_file": "linux-clicked-3.json",
+      "image_sha256": "f0863cc9af91697a5c549e10f74cb1deb64e9cb989257729fb71009078fa2ab0"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "absent",
+      "replicate": 1,
+      "run_id": 41550538298,
+      "job_id": 125636723874,
+      "result_file": "windows-absent-1.json",
+      "image_sha256": "af316b5d351985381eda4cbe14c01e4fe6a917f92e4e21dcf0b967764dd07fbf"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "absent",
+      "replicate": 2,
+      "run_id": 41551406771,
+      "job_id": 125639620825,
+      "result_file": "windows-absent-2.json",
+      "image_sha256": "86bcc84475fd35c940d84522566e164da7f71239027db9ca1390c83c402c0bd3"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "absent",
+      "replicate": 3,
+      "run_id": 41551406771,
+      "job_id": 125639620695,
+      "result_file": "windows-absent-3.json",
+      "image_sha256": "d7d5182b915eb72087b3daa2f08830a6aa25562ac94a522aa974e5041956297d"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "text_only",
+      "replicate": 1,
+      "run_id": 41550538298,
+      "job_id": 125636723510,
+      "result_file": "windows-text_only-1.json",
+      "image_sha256": "7eb4b8212564b0bbf8895989893c4faf71cdd55a5a4f8283bdc3c1d37620f7b3"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "text_only",
+      "replicate": 2,
+      "run_id": 41551406771,
+      "job_id": 125639620928,
+      "result_file": "windows-text_only-2.json",
+      "image_sha256": "c8303a15c189b79333833f3593548cc1d3218227a481441b1a43078eebb338fc"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "text_only",
+      "replicate": 3,
+      "run_id": 41551406771,
+      "job_id": 125639620794,
+      "result_file": "windows-text_only-3.json",
+      "image_sha256": "c2466981cabaf2f84ea9269cebd1f7bc7c41e46721eb8f55398204e249624661"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "input_field",
+      "replicate": 1,
+      "run_id": 41550538298,
+      "job_id": 125636723761,
+      "result_file": "windows-input_field-1.json",
+      "image_sha256": "f2e02ddb72c87c1efe8962ed17458e53e04faf11b6ca1608df519abb61c77ccc"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "input_field",
+      "replicate": 2,
+      "run_id": 41551406771,
+      "job_id": 125639620664,
+      "result_file": "windows-input_field-2.json",
+      "image_sha256": "3df160ed1a6c52836f23cee2a00984ea10c9e0d1089d7c7641047bfc4cea735d"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "input_field",
+      "replicate": 3,
+      "run_id": 41551406771,
+      "job_id": 125639620660,
+      "result_file": "windows-input_field-3.json",
+      "image_sha256": "447a04a7c7f66bc7cf504b5b8bd04ccce91562ab5bb8cd95b3b286b0094eb9fa"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "background_link",
+      "replicate": 1,
+      "run_id": 41550538298,
+      "job_id": 125636723962,
+      "result_file": "windows-background_link-1.json",
+      "image_sha256": "c1da52599e60b94e38789fbcc42159a01bad54bade95fba7ec8bd0587cc01997"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "background_link",
+      "replicate": 2,
+      "run_id": 41551406771,
+      "job_id": 125639620647,
+      "result_file": "windows-background_link-2.json",
+      "image_sha256": "8aea3f8989e3c40bba501fca8fcff1734a2be0978ee5c4e2783a47bfe0f1d013"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "background_link",
+      "replicate": 3,
+      "run_id": 41551406771,
+      "job_id": 125639620313,
+      "result_file": "windows-background_link-3.json",
+      "image_sha256": "f18a72fe751c2c63ced6f73c5c9bbe675ea023902923f4679ce5d7639acfcad1"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "clicked",
+      "replicate": 1,
+      "run_id": 41550538298,
+      "job_id": 125636724008,
+      "result_file": "windows-clicked-1.json",
+      "image_sha256": "92d68ef4def5abb0cb438502ba986dd059ec8522fe89c5f84756d14ed5dcbb2c"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "clicked",
+      "replicate": 2,
+      "run_id": 41551406771,
+      "job_id": 125639620578,
+      "result_file": "windows-clicked-2.json",
+      "image_sha256": "4c62ac756fe31d8bb9fbe43bd4ef54279754bc3c4bb3a4d381c2ce4aa764c28b"
+    },
+    {
+      "target_os": "windows",
+      "scenario": "clicked",
+      "replicate": 3,
+      "run_id": 41551406771,
+      "job_id": 125646588125,
+      "result_file": "windows-clicked-3.json",
+      "image_sha256": "0b89e442cc064fdf88aeb8e44d894a8294d36c8fc9e667d23870a619c3d1476a"
+    }
+  ],
+  "failures": [
+    {
+      "run_id": 41549961173,
+      "job_id": 125634815539,
+      "target_os": "linux",
+      "scenario": "background_link",
+      "replicate": 1,
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "run_id": 41549961173,
+      "job_id": 125634815914,
+      "target_os": "linux",
+      "scenario": "input_field",
+      "replicate": 1,
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "run_id": 41549961173,
+      "job_id": 125634815921,
+      "target_os": "linux",
+      "scenario": "text_only",
+      "replicate": 1,
+      "reason": "browser_pids_missing_from_pslist"
+    },
+    {
+      "run_id": 41549961173,
+      "job_id": 125634815992,
+      "target_os": "linux",
+      "scenario": "clicked",
+      "replicate": 1,
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "run_id": 41549961173,
+      "job_id": 125634815999,
+      "target_os": "linux",
+      "scenario": "absent",
+      "replicate": 1,
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "run_id": 41549961157,
+      "job_id": 125634815107,
+      "target_os": "windows",
+      "scenario": "input_field",
+      "replicate": 1,
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "run_id": 41549961157,
+      "job_id": 125634815455,
+      "target_os": "windows",
+      "scenario": "background_link",
+      "replicate": 1,
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "run_id": 41549961157,
+      "job_id": 125634815502,
+      "target_os": "windows",
+      "scenario": "absent",
+      "replicate": 1,
+      "reason": "browser_landing_failed"
+    },
+    {
+      "run_id": 41549961157,
+      "job_id": 125634815625,
+      "target_os": "windows",
+      "scenario": "text_only",
+      "replicate": 1,
+      "reason": "browser_landing_failed"
+    },
+    {
+      "run_id": 41549961157,
+      "job_id": 125634815652,
+      "target_os": "windows",
+      "scenario": "clicked",
+      "replicate": 1,
+      "reason": "validator_missing_baseline_yara"
+    },
+    {
+      "run_id": 41550538103,
+      "job_id": 125636721882,
+      "target_os": "linux",
+      "scenario": "text_only",
+      "replicate": 1,
+      "reason": "browser_pids_missing_from_pslist"
+    },
+    {
+      "run_id": 41550538103,
+      "job_id": 125636722303,
+      "target_os": "linux",
+      "scenario": "background_link",
+      "replicate": 1,
+      "reason": "browser_pids_missing_from_pslist"
+    },
+    {
+      "run_id": 41551406751,
+      "job_id": 125639620599,
+      "target_os": "linux",
+      "scenario": "clicked",
+      "replicate": 3,
+      "reason": "target_navigation_failed"
+    },
+    {
+      "run_id": 41551406771,
+      "job_id": 125639620648,
+      "target_os": "windows",
+      "scenario": "clicked",
+      "replicate": 3,
+      "reason": "browser_landing_failed"
+    }
+  ],
+  "workflow_runs": [
+    41549961173,
+    41549961157,
+    41550538103,
+    41550538298,
+    41551406751,
+    41551406771
+  ]
+}
