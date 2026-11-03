@@ -2,6 +2,15 @@ name: Remote-host onion study - service runner
 
 on:
   workflow_dispatch:
+    inputs:
+      replicate:
+        description: Preregistered replicate number (1–10)
+        required: true
+        default: '1'
+        type: string
+  push:
+    branches: [research/remote-replication]
+    paths: [.github/workflows/study-remote-host.yml]
 
 permissions:
   actions: write
@@ -20,7 +29,8 @@ jobs:
       - name: Run independent onion service and dispatch client runners
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: python3 benchmarks/study_remote_service.py --tor-binary /usr/bin/tor --output remote-service-result.json --timeout-seconds 3300
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+        run: python3 benchmarks/study_remote_service.py --tor-binary /usr/bin/tor --output remote-service-result.json --timeout-seconds 3300 --replicate '${{ inputs.replicate || '1' }}'
       - name: Upload service-side request ground truth
         if: always()
         uses: actions/upload-artifact@v4
