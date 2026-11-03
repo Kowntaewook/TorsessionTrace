@@ -4,7 +4,7 @@
 
 ## Abstract
 
-An exact URL string recovered from browser memory can originate from content that never triggered a request to that URL. We present TorSessionTrace, a Volatility 3 plugin that labels recovered Tor Browser URL strings as process-memory observations rather than visits. Two initial Windows/Linux whole-RAM fixtures used restricted localhost and real v3 onion transport; each yielded 18 analyzable images, three per OS × absent, unclicked-link, or clicked condition. A third, pre-specified real-onion fixture added visible text, typed input, and an unclicked background-tab link, with 30 analyzable whole-RAM images and a target-blind generic v3-onion YARA comparator. An independent HTTP server counted randomized target-path requests. In the extended fixture, the target was recovered from all 18 nonvisit exposure images despite zero target requests, from all six clicked images with a request, and from none of six absent images. YARA agreed with the plugin's binary target presence in all 30 images. The 30 images required 44 actual job attempts, including seven jobs stopped by an implementation bug. A separate-host onion pilot checks whether service-side counters can corroborate client captures across hosted machines. These observations refute the categorical rule “memory URL implies request” under the tested conditions. They do not measure a general error rate or reconstruct visits, sessions, tabs, connections, or time order.
+An exact URL string recovered from browser memory can originate from content that never triggered a request to that URL. We present TorSessionTrace, a Volatility 3 plugin that labels recovered Tor Browser URL strings as process-memory observations rather than visits. Two initial Windows/Linux whole-RAM fixtures used restricted localhost and real v3 onion transport; each yielded 18 analyzable images, three per OS × absent, unclicked-link, or clicked condition. A third, pre-specified real-onion fixture added visible text, typed input, and an unclicked background-tab link, with 30 analyzable whole-RAM images and a target-blind generic v3-onion YARA comparator. An independent HTTP server counted randomized target-path requests. In the extended fixture, the target was recovered from all 18 nonvisit exposure images despite zero target requests, from all six clicked images with a request, and from none of six absent images. YARA agreed with the plugin's binary target presence in all 30 images. The 30 images required 44 actual job attempts, including seven jobs stopped by an implementation bug. A separate-host onion pilot cross-checked four planned and five additional analyzable client images against independent service-side request counters; its final service job failed on a completion notification after uploading the counter artifact. These observations refute the categorical rule “memory URL implies request” under the tested conditions. They do not measure a general error rate or reconstruct visits, sessions, tabs, connections, or time order.
 
 ## 1. Introduction
 
@@ -34,7 +34,7 @@ The primary unit was an independently acquired image, rather than repeated scans
 
 ## 4. Pilot results, by transport and presentation
 
-The following first table describes the restricted localhost relay. The v3 onion results follow separately; the two strata are not pooled.
+The first table describes the restricted localhost relay. The same-host and separate-host v3 onion results follow as distinct strata; no cross-stratum rate is calculated.
 
 | OS | Condition | Target URL in memory | Target HTTP request | Median adapter time |
 | --- | --- | ---: | ---: | ---: |
@@ -62,7 +62,7 @@ The localhost fixture's 18 analyzable images required 21 capture attempts. Windo
 
 In the onion stratum, target-string hits by replicate were Linux `0,0,0` / `4,5,3` / `27,22,30` and Windows `0,0,0` / `14,4,13` / `61,54,56` for absent / link only / clicked. All 18 images had distinct image, target, and onion-hostname hashes; all stable browser PIDs and both Tor daemon PIDs appeared in Volatility's process list, and the absent-control URL had zero hits. Exact-target YARA agreed with binary target presence. The [onion result report](onion-study-results-2026-11-03.md) provides per-capture records and workflow logs.
 
-The onion fixture also required 21 attempts for 18 analyzable images. Windows produced 9/9 on the first attempt. Two failed Linux attempts lacked recorded browser PIDs in `pslist`; another could not load the onion landing page before acquisition. Fresh replacements filled these cells. Across both fixtures, failed attempts are technical failures, not target-negative observations. Their mechanisms remain undetermined and may affect which images are analyzable.
+The onion fixture also required 21 attempts for 18 analyzable images. Windows produced 9/9 on the first attempt. Two failed Linux attempts lacked recorded browser PIDs in `pslist`; another could not load the onion landing page before acquisition. Fresh replacements filled these cells. Across these first two fixtures, failed attempts are technical failures, not target-negative observations. Their mechanisms remain undetermined and may affect which images are analyzable.
 
 ### Extended same-host v3 onion conditions and target-blind baseline
 
@@ -85,13 +85,22 @@ Thus, all 18 nonvisit exposure images held the exact URL with zero target reques
 
 ### Separate-host v3 onion pilot
 
-The [remote-host report](remote-host-results-2026-11-03.md) evaluates four selected client images against independent service-side request counters. This one-per-cell pilot tests the cross-run measurement path; it cannot provide a meaningful detection-rate estimate.
+The [remote-host report](remote-host-results-2026-11-03.md) evaluates four selected client images against independent service-side request counters from different GitHub runner identities. Each unclicked cell showed a target string with zero target requests; each clicked cell showed a string and positive requests. The fourth service record reports two Windows-clicked target requests, matching its client. A failed `/finish` cleanup notification caused that service job to conclude failure, but its `finally` block and upload step preserved the counter artifact. The [aggregate](../research-results/2026-11-03-remote/aggregate.json) checks service run ID, onion-hostname hash, landing count, and target count for all four planned and five additional analyzable client images.
+
+| Client OS | Condition | Planned images with target string | Service target requests | Adapter / target-blind YARA hits |
+| --- | --- | ---: | ---: | ---: |
+| Linux | unclicked link | 1/1 | 0 | 4 / 5 |
+| Linux | clicked | 1/1 | 1 | 40 / 53 |
+| Windows | unclicked link | 1/1 | 0 | 7 / 7 |
+| Windows | clicked | 1/1 | 2 | 14 / 22 |
+
+The one-per-cell pilot tests the cross-run measurement path; it cannot provide a meaningful detection-rate estimate. Across four service dispatches, 16 client jobs yielded nine analyzable images and seven technical failures. Five successful later captures are retained as descriptive extras rather than added to the planned denominator. The pilot has no absent-target condition or packet-level Tor circuit record.
 
 ## 5. Discussion and threats to validity
 
 The controlled unclicked-link observations in the first two fixtures, and the 18 text-only, typed-input, and unclicked-background-link observations in the extended fixture, refute a categorical inference from a URL string hit to a request under these conditions. A URL in the `clicked` condition is also only a string observation; the independent server counter supports the condition's request, not a causal link between a particular memory copy and that request. Accordingly, these studies do not validate session, tab, connection, or temporal reconstruction.
 
-All fixtures are intentionally constrained: headless Tor Browser, one browser version, two GitHub-hosted OS configurations, and a short delay before capture. The remote pilot moves the service to a separate runner, but no packet-level Tor circuit path was retained. Per-cell extended sample size is three, intervals are wide, and analyzability was imperfect. Workflow repairs occurred between attempts and are disclosed, but they limit simple comparability of technical failure rates. Runner hardware and memory allocation may vary, so OS runtime differences cannot be attributed solely to the adapters. The target-blind YARA rule is specific to v3-onion URL syntax and uses different scanner traversal; its shorter measured times do not establish a general speed advantage. Raw RAM is not released because it can contain unrelated runner secrets or personal data; a reader can reproduce new acquisitions but cannot reanalyze an identical public corpus. Prior Tor memory studies [1, 3] limit the novelty of URL recovery, and structural Gecko work [3] shows a different kind of contribution.
+All fixtures are intentionally constrained: headless Tor Browser, one browser version, two GitHub-hosted OS configurations, and a short delay before capture. The remote pilot moves the service to a separate runner, but no packet-level Tor circuit path was retained; one service job ended in failure after a cleanup notification was lost. Per-cell extended sample size is three, intervals are wide, and analyzability was imperfect. Workflow repairs occurred between attempts and are disclosed, but they limit simple comparability of technical failure rates. Runner hardware and memory allocation may vary, so OS runtime differences cannot be attributed solely to the adapters. The target-blind YARA rule is specific to v3-onion URL syntax and uses different scanner traversal; its shorter measured times do not establish a general speed advantage. Raw RAM is not released because it can contain unrelated runner secrets or personal data; a reader can reproduce new acquisitions but cannot reanalyze an identical public corpus. Prior Tor memory studies [1, 3] limit the novelty of URL recovery, and structural Gecko work [3] shows a different kind of contribution.
 
 ## 6. Conclusion and next study
 

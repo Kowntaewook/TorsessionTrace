@@ -1,16 +1,6 @@
 name: Extended real-onion controls and blind baseline - Windows
 
 on:
-  push:
-    paths:
-      - '.github/workflows/study-extended-windows.yml'
-      - 'benchmarks/study_extended_fixture.py'
-      - 'benchmarks/study_extended_validate.py'
-      - 'benchmarks/tor_onion_probe.py'
-      - 'benchmarks/study_fixture.py'
-      - 'benchmarks/study_validate.py'
-      - 'benchmarks/use_https_symbols.py'
-      - 'plugins/tor_session_trace/**'
   workflow_dispatch:
 
 permissions:
@@ -24,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         scenario: [absent, text_only, input_field, background_link, clicked]
-        replicate: [2, 3]
+        replicate: [1, 2, 3]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
