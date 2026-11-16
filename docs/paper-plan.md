@@ -33,6 +33,8 @@ This is a **measurement and evidentiary-boundary** contribution. In the two orig
 - If claiming visit reconstruction, add and validate independent structural or network evidence that links the specific URL to a request and time window. Do not assume `SessionHistory`, `Document`, or `STREAM` objects are recoverable.
 - For a peer-reviewable benchmark, build a consented, redistributable fixed memory corpus or a deterministic acquisition environment with enough public measurements to support replication. Investigate the `pslist`/browser-PID misses and workflow failures across all strata; document the effect of conditional-on-analyzability selection.
 
+The [local fixed-image pilot](fixed-corpus-2026-11-16.md) now retains three whole-RAM archives, exact hashes, complete output, and a replay procedure. It used synthetic loopback URLs in one Linux VM and does not add independent onion or Windows samples. The images remain private pending content and distribution review, so the public-corpus requirement above is still open.
+
 ## Closest literature
 
 - [Alfosail and Norris (2021), *Tor forensics: Proposed workflow for client memory artefacts*](https://wrap.warwick.ac.uk/id/eprint/168347/): prior Tor client memory workflow. Treat URL recovery itself as established prior work.

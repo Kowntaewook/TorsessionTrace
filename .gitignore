@@ -13,3 +13,7 @@ __pycache__/
 *.hpak
 *.core
 *.core.gz
+*.elf
+*.elf.zst
+*.qcow2
+*.iso

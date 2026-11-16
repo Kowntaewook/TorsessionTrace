@@ -6,6 +6,7 @@ TorSessionTrace is a Volatility 3 plugin that extracts URL and v3 `.onion` **str
 
 | Test | Fixture | Result |
 | --- | --- | --- |
+| **Private fixed-image pilot** | Three x86-64 Ubuntu/QEMU whole-RAM captures made locally on an Apple Silicon Mac; synthetic loopback URLs, Tor Browser 16.0.1 | Absent **0 hits/0 GETs**, unclicked link **4 hits/0 GETs**, clicked **40 hits/1 GET**; **3/3 archives replayed** with matching complete outputs. Hashes and limits are in the [pilot report](docs/fixed-corpus-2026-11-16.md). Archives are private pending review. |
 | **Separate-host replication, complete** | Locked six-cell matrix; ten independently selected captures per Windows/Linux × absent/link-only/clicked cell | **60/60 planned** images analyzable; 20/20 unclicked-link images had target strings with **zero** service-observed target requests; five technical failures were recorded and replaced under the locked rule; [final report](docs/remote-replication-results-2026-11-03.md) |
 | **Extended real-onion controls** | 30 independent Windows/Linux whole-RAM images; five scenarios × three captures per OS | 18/18 text-only, typed-input, or background-link images contained the target URL with **zero target requests**; target-blind generic YARA agreed on image-level presence in 30/30 |
 | **Separate-host onion pilot** | Linux onion service on a different GitHub runner from Linux/Windows Tor Browser clients | **4/4 planned** and **5 additional** analyzable client images cross-checked against independent service counters; see [pilot report](docs/remote-host-results-2026-11-03.md) and its disclosed service-control failure |
@@ -88,6 +89,7 @@ Memory images and plugin output can contain sensitive data. The workflows upload
 
 ## Reproduce the checks
 
+- [Local fixed-image capture and replay](benchmarks/fixed_corpus/README.md): QEMU-based synthetic browser fixture and complete RAM archive verification. The three-image [pilot report](docs/fixed-corpus-2026-11-16.md) records individual hashes and failures. Raw archives are not released yet, so exact external replay is not available.
 - [CI workflow](.github/workflows/ci.yml): synthetic extraction tests and plugin registration on Windows, Ubuntu, and macOS. [Passing run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41433076743).
 - [Whole-system image workflow](.github/workflows/full-image-validation.yml): verified Foundation Windows/Linux images and matching symbols, baseline `pslist`, then three adapter runs. [Passing run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41433076839) and [measurements](docs/full-image-validation-2026-11-02.md).
 - [Tor Browser memory benchmark](.github/workflows/benchmark.yml): signed Tor Browser 16.0 download, offline unvisited-link control, `gcore` capture, then three shared-extractor runs. [Passing run](https://github.com/Kowntaewook/TorsessionTrace/actions/runs/41433076755) and [measurements](docs/benchmark-2026-11-02.md).

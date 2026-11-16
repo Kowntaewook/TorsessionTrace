@@ -15,11 +15,17 @@ def evaluate(args):
     absent = control["absent_control_url"]
     scenario = control["scenario"]
     root = Path(__file__).resolve().parents[1]
-    common = ["-p", str(root / "plugins")]
+    common = []
+    if args.cache:
+        args.cache.mkdir(parents=True, exist_ok=True)
+        common += ["--cache-path", str(args.cache.resolve())]
+    common += ["-p", str(root / "plugins")]
     if args.symbols:
         common += ["-s", str(args.symbols.resolve())]
     common += ["-f", str(args.image.resolve()), "-r", "json"]
     pslist, pslist_seconds = run_vol(common, f"{args.target}.pslist")
+    if args.pslist_output:
+        args.pslist_output.write_text(json.dumps(pslist, indent=2) + "\n", encoding="utf-8")
     process_map = {int(r["PID"]): r for r in pslist if isinstance(r.get("PID"), int)}
     pids = [int(pid) for pid in control["browser_pids"] if int(pid) in process_map]
     missing_pids = [int(pid) for pid in control["browser_pids"] if int(pid) not in process_map]
@@ -33,6 +39,8 @@ def evaluate(args):
     hits, adapter_seconds_total = run_vol(
         common, plugin, "--pid", *(str(pid) for pid in pids), "--max-hits", "1000000"
     )
+    if args.hits_output:
+        args.hits_output.write_text(json.dumps(hits, indent=2) + "\n", encoding="utf-8")
     if any(row.get("PID") not in pids or row.get("Evidence") != "E1:process_memory_string"
            for row in hits):
         raise RuntimeError("Invalid adapter evidence or unexpected PID")
@@ -112,9 +120,15 @@ def main():
     parser.add_argument("--target", choices=("windows", "linux"), required=True)
     parser.add_argument("--image", type=Path, required=True)
     parser.add_argument("--symbols", type=Path)
+    parser.add_argument("--cache", type=Path,
+                        help="Writable Volatility cache directory")
     parser.add_argument("--control", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--baseline-yara", action="store_true")
+    parser.add_argument("--pslist-output", type=Path,
+                        help="Save all flattened process rows; may contain private data")
+    parser.add_argument("--hits-output", type=Path,
+                        help="Save all extracted hits; may contain private URLs")
     args = parser.parse_args()
     result = evaluate(args)
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
